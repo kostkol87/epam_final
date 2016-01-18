@@ -10,7 +10,7 @@ public class DBUtils {
         System.out.println("IN GET CONNECTION");
         Connection connection = null;
         try {
-            connection = AppServerUtils.<DataSource>localJndiSearch("jdbc/TestDB", DataSource.class).getConnection();
+            connection = AppServerUtils.<DataSource>localJndiSearch("jdbc/DiscountFlights", DataSource.class).getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
