@@ -19,9 +19,11 @@ public class RootController extends HttpServlet{
         processRequest(req, resp);
     }
 
-    protected void processRequest(HttpServletRequest req, HttpServletResponse resp){
+    protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /**
          * TODO forward to certain page via requestDispatcher
          */
+//        req.getRequestDispatcher("index.jsp").forward(req, resp);
+        req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
     }
 }
