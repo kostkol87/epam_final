@@ -14,7 +14,6 @@
 <%--<img src="${pageContext.request.contextPath}/images/uk.gif" alt="">--%>
 
 
-
 <p><fmt:message key="Locale"/></p>
   1. <fmt:message key="login"/><br/>
   2. <fmt:message key="password"/><br/>
