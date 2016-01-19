@@ -10,11 +10,15 @@
   <title><fmt:message key="LogIn"/></title>
 </head>
 <body>
-<h1><fmt:message key="LogIn"/> </h1>
-<form action="/login" method="post">
+<h1><fmt:message key="Registration"/> </h1>
+<form action="/registration" method="post">
   <input placeholder="<fmt:message key="login"/>" name="loginField"><br>
-  <input type="password" autocomplete="off" placeholder="<fmt:message key="password" />" name="passField"><br>
-  <input type="submit" value="<fmt:message key="LogIn"/>">
+  <input type="password" autocomplete="off"  placeholder="<fmt:message key="password"/>" name="passField"><br>
+  <%--<input type="password" placeholder="<fmt:message key="RepeatPass"/>" name="passField"><br>--%>
+  <input placeholder="<fmt:message key="sName"/>" name="sNameField"><br>
+  <input placeholder="<fmt:message key="Name"/>" name="nameField"><br>
+  <input placeholder="<fmt:message key="Patronomic"/>" name="patronomicField"><br>
+  <input type="submit" value="<fmt:message key="Registration"/>">
   <input type="button" value="<fmt:message key="Home"/> " onclick="history.back()">
 </form>
 <a href="/ru_RU">ru</a> | <a href="/en_US">en</a>
