@@ -12,11 +12,10 @@
 <h2>Hello {someone}</h2><br>
 this is the main screen!
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<c:forEach items="${rows}" var="row">
+    <c:out value="${row.name}" /><br>
+</c:forEach><br>
+
 <a href="/ru_RU">ru</a> | <a href="/en_US">en</a>
 </fmt:bundle>
 </body>

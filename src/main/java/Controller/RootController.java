@@ -1,5 +1,8 @@
 package Controller;
 
+import DAObjects.EntityCollections;
+import DAObjects.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/")
-public class RootController extends HttpServlet{
+public class RootController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
@@ -24,52 +27,70 @@ public class RootController extends HttpServlet{
         /**
          * TODO forward to certain page via requestDispatcher
          */
-//        req.getRequestDispatcher("index.jsp").forward(req, resp);
-//        PrintWriter writer = resp.getWriter();
-//        Connection connection = ConnectionPool.getInstance().getConnection();
-//        try {
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT id, role FROM roles;");
-//            while (resultSet.next()){
-//                writer.print("id: " + resultSet.getString("id"));
-//                writer.print("role: " + resultSet.getString("role"));
-//            }
-//            resultSet.close();
-//            ConnectionPool.getInstance().free(connection);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         HttpSession session = req.getSession(true);
-        if (session.getAttribute("user") != "" && session.getAttribute("user") != null){
+        if (session.getAttribute("user") != "" && session.getAttribute("user") != null) {
             /**
              * TODO forward to users home page
              */
             System.out.println(session.getAttribute("user") + " user atribut");
-        }else {
+        } else {
             /**
              * TODO go to login or registration (welcome page)
              */
-            switch (req.getRequestURI()){
-                case "/login":{
+            switch (req.getRequestURI()) {
+                case "/login": {
                     req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
                     break;
-                }case "/register": {
+                }
+                case "/register": {
                     req.getRequestDispatcher("jsp/register.jsp").forward(req, resp);
                     break;
-                }case "/ru_RU": {
+                }
+                case "/ru_RU": {
                     session.setAttribute("locale", "ru_RU");
                     resp.sendRedirect(req.getHeader("Referer"));
                     break;
-                }case "/en_US": {
+                }
+                case "/en_US": {
                     session.setAttribute("locale", "en_US");
                     resp.sendRedirect(req.getHeader("Referer"));
                     break;
-                } default:{
+                }
+                case "/logged": {
+                        switch (req.getHeader("Referer")) {
+                            /**
+                             * TODO validate log/pass and forward to workspace and save data to session or show error page
+                             */
+                            case "/login": {
+                                System.out.println("come from login");
+                                String login = (String) req.getAttribute("loginField");
+                                String password = (String) req.getAttribute("passField");
+                                User user = new EntityCollections().getUser(login);
+                                if (password.equals(user.getPassword())) {
+                                    session.setAttribute("userMail", user);
+                                    req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
+                                } else {
+                                    req.getRequestDispatcher("jsp/loginFail.jsp").forward(req, resp);
+                                }
+                                break;
+                            }
+                            case "/register": {
+                                /**
+                                 *TODO add new user to database, save data to session and forward to workspace
+                                 */
+                                System.out.println("come from register");
+                                req.getRequestDispatcher("jsp/loginFail.jsp").forward(req, resp);
+                                break;
+                            }
+                        }
+                    break;
+                }
+                default: {
                     req.getRequestDispatcher("jsp/welcome.jsp").forward(req, resp);
                 }
+
             }
 
         }
-
     }
 }

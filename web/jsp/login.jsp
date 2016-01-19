@@ -10,9 +10,9 @@
 </head>
 <body>
 <h1><fmt:message key="LogIn"/> </h1>
-<form action="/login" method="post">
-  <input placeholder="<fmt:message key="login"/>" name="loginField"><br>
-  <input type="password" autocomplete="off" placeholder="<fmt:message key="password" />" name="passField"><br>
+<form action="/logged" method="post">
+  <input placeholder="<fmt:message key="login"/>" required name="loginField"><br>
+  <input type="password" autocomplete="off" placeholder="<fmt:message key="password" />" required name="passField"><br>
   <input type="submit" value="<fmt:message key="LogIn"/>">
   <input type="button" value="<fmt:message key="Home"/> " onclick="history.back()">
 </form>

@@ -10,13 +10,13 @@
 </head>
 <body>
 <h1><fmt:message key="Registration"/> </h1>
-<form action="/registration" method="post">
-  <input placeholder="<fmt:message key="login"/>" name="loginField"><br>
-  <input type="password" autocomplete="off"  placeholder="<fmt:message key="password"/>" name="passField"><br>
+<form action="/logged" method="post">
+  <input placeholder="<fmt:message key="login"/>" required name="loginField"><br>
+  <input type="password" autocomplete="off"  placeholder="<fmt:message key="password"/>" required name="passField"><br>
   <%--<input type="password" placeholder="<fmt:message key="RepeatPass"/>" name="passField"><br>--%>
-  <input placeholder="<fmt:message key="sName"/>" name="sNameField"><br>
-  <input placeholder="<fmt:message key="Name"/>" name="nameField"><br>
-  <input placeholder="<fmt:message key="Patronomic"/>" name="patronomicField"><br>
+  <input placeholder="<fmt:message key="sName"/>" required name="sNameField"><br>
+  <input placeholder="<fmt:message key="Name"/>" required name="nameField"><br>
+  <input placeholder="<fmt:message key="Patronomic"/>" required name="patronomicField"><br>
   <input type="submit" value="<fmt:message key="Registration"/>">
   <input type="button" value="<fmt:message key="Home"/> " onclick="history.back()">
 </form>
