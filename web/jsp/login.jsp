@@ -4,7 +4,6 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <%--<fmt:setLocale value="ru_RU"/>--%>
   <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
   <fmt:bundle basename="local">
   <title><fmt:message key="LogIn"/></title>
