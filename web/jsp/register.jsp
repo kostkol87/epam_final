@@ -18,9 +18,9 @@
   <input placeholder="<fmt:message key="Name"/>" required name="nameField"><br>
   <input placeholder="<fmt:message key="Patronomic"/>" required name="patronomicField"><br>
   <input type="submit" value="<fmt:message key="Registration"/>">
-  <input type="button" value="<fmt:message key="Home"/> " onclick="history.back()">
+  <input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/'">
 </form>
-<a href="/ru_RU">ru</a> | <a href="/en_US">en</a>
+<a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>
 </body>
 </html>

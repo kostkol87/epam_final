@@ -14,9 +14,9 @@
   <input placeholder="<fmt:message key="login"/>" required name="loginField"><br>
   <input type="password" autocomplete="off" placeholder="<fmt:message key="password" />" required name="passField"><br>
   <input type="submit" value="<fmt:message key="LogIn"/>">
-  <input type="button" value="<fmt:message key="Home"/> " onclick="history.back()">
+  <input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/'">
 </form>
-<a href="/ru_RU">ru</a> | <a href="/en_US">en</a>
+<a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>
 </body>
 </html>

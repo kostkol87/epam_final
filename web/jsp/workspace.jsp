@@ -9,14 +9,15 @@
     <title>Workspace</title>
 </head>
 <body>
-<h2>Hello {someone}</h2><br>
+<h2>Hello, ${pageContext.session.getAttribute('userMail').getName()} ${pageContext.session.getAttribute('userMail').getSurname()}</h2><br>
 this is the main screen!
 <br>
 <c:forEach items="${rows}" var="row">
     <c:out value="${row.name}" /><br>
 </c:forEach><br>
 
-<a href="/ru_RU">ru</a> | <a href="/en_US">en</a>
+<a href="/logout"><fmt:message key="LogOut"/></a>
+<a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>
 </body>
 </html>

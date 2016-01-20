@@ -22,15 +22,18 @@ public class EntityCollections {
                     "SELECT id, password, surname, name, patronomic, role FROM flight_discounter.user WHERE email=?");
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("result set is ready!");
             if (resultSet != null) {
-                resultSet.next();
-                user.setId(resultSet.getInt("id"));
-                user.setEmail(email);
-                user.setPassword(resultSet.getString("password"));
-                user.setSurname(resultSet.getString("surname"));
-                user.setName(resultSet.getString("name"));
-                user.setPatronomic(resultSet.getString("patronomic"));
-                user.setRole(resultSet.getInt("role"));
+                while (resultSet.next()) {
+                    user.setId(resultSet.getInt("id"));
+                    user.setEmail(email);
+                    user.setPassword(resultSet.getString("password"));
+                    user.setSurname(resultSet.getString("surname"));
+                    user.setName(resultSet.getString("name"));
+                    user.setPatronomic(resultSet.getString("patronomic"));
+                    user.setRole(resultSet.getInt("role"));
+                }
+                System.out.println("just returned user");
                 return user;
             }
 
