@@ -1,3 +1,4 @@
+<%@ page import="Utils.ConnectionPool.ConnectionPool" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,7 +11,8 @@
 </head>
 <body>
 <h2>Hello, ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()}</h2><br>
-this is the main screen!
+Full list of available flights:
+
 <br>
 <c:forEach items="${rows}" var="row">
     <c:out value="${row.name}" /><br>
@@ -18,6 +20,7 @@ this is the main screen!
 
 <a href="/logout"><fmt:message key="LogOut"/></a>
 <a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
+<%--<img src="${pageContext.request.contextPath}/statics/images/Flag_of_Russia.svg.png" alt="">--%>
 </fmt:bundle>
 </body>
 </html>

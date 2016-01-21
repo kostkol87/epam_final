@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityCollections {
@@ -84,5 +87,37 @@ public class EntityCollections {
             e.printStackTrace();
         }
         return true;
+    }
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public List<Direction> getDirections(){
+        List<Direction> directions = new ArrayList<>();
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("" +
+                    "SELECT id, departure, dep_date, destination, dest_date," +
+                            " basic_price, date_multiplier, fill_multiplier, " +
+                            "capacity, left_places FROM directions"
+            );
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Direction newDirection;
+            while (resultSet.next()){
+                newDirection = new Direction();
+                newDirection.setId(resultSet.getInt("id"));
+                newDirection.setDeparture(resultSet.getString("departure"));
+                newDirection.setDepTime(sdf.parse(resultSet.getString("dep_date")));
+                newDirection.setDestination(resultSet.getString("destination"));
+                newDirection.setDestTime(sdf.parse(resultSet.getString("dest_date")));
+                newDirection.setBasicPrice(resultSet.getDouble("basic_price"));
+                newDirection.setDateMultiplier(resultSet.getDouble("date_multiplier"));
+                newDirection.setFillMultiplier(resultSet.getDouble("fill_multiplier"));
+                newDirection.setCapacity(resultSet.getInt("capacity"));
+                newDirection.setLeftPlaces(resultSet.getInt("left_places"));
+                directions.add(newDirection);
+            }
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+        }
+        return directions;
     }
 }

@@ -15,6 +15,8 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class DirectionsGenerator {
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private static List<String> cities;
     Random rand = new Random();
     private void getCities() throws SQLException {
@@ -46,7 +48,10 @@ public class DirectionsGenerator {
         direction.setBasicPrice(ThreadLocalRandom.current().nextDouble(40.0, 150.0));
         direction.setDateMultiplier(System.currentTimeMillis() % 2 == 0 ? 1 : 1.2);
         direction.setFillMultiplier(System.currentTimeMillis() % 3 == 0 ? 1 : 1.2);
-        direction.setCapacity(ThreadLocalRandom.current().nextInt(50,200));
+        int cap = ThreadLocalRandom.current().nextInt(50, 200);
+        direction.setCapacity(cap);
+        direction.setLeftPlaces(cap);
+        System.out.println(direction);
         return direction;
     }
 
@@ -54,20 +59,21 @@ public class DirectionsGenerator {
         List<Direction> directions = new ArrayList<>();
         Connection connection = ConnectionPool.getInstance().getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(
-                "INSERT INTO directions (departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity) VALUES (?,?,?,?,?,?,?,?);");
+                "INSERT INTO directions (departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity, left_places) VALUES (?,?,?,?,?,?,?,?,?);");
 
-        for (int i = 0; i < 97; i++) {
+        for (int i = 0; i < 100; i++) {
             directions.add(new DirectionsGenerator().generateDirection());
         }
         for (Direction direction:directions){
             preparedStatement.setString(1,direction.getDeparture());
-            preparedStatement.setDate(2, new java.sql.Date(direction.getDepTime().getTime()));
+            preparedStatement.setString(2, sdf.format(direction.getDepTime()));
             preparedStatement.setString(3, direction.getDestination());
-            preparedStatement.setDate(4, new java.sql.Date(direction.getDestTime().getTime()));
+            preparedStatement.setString(4, sdf.format(direction.getDestTime()));
             preparedStatement.setDouble(5, direction.getBasicPrice());
             preparedStatement.setDouble(6, direction.getDateMultiplier());
             preparedStatement.setDouble(7, direction.getFillMultiplier());
             preparedStatement.setInt(8, direction.getCapacity());
+            preparedStatement.setInt(9, direction.getLeftPlaces());
             preparedStatement.executeUpdate();
         }
         System.out.println("ALL DONE");

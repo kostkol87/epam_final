@@ -12,6 +12,7 @@ public class Direction {
     private double dateMultiplier;
     private double fillMultiplier;
     private int capacity;
+    private int leftPlaces;
 
     public int getId() {
         return id;
@@ -85,6 +86,14 @@ public class Direction {
         this.capacity = capacity;
     }
 
+    public int getLeftPlaces() {
+        return leftPlaces;
+    }
+
+    public void setLeftPlaces(int leftPlaces) {
+        this.leftPlaces = leftPlaces;
+    }
+
     @Override
     public String toString() {
         return "Direction{" +
@@ -97,6 +106,7 @@ public class Direction {
                 ", dateMultiplier=" + dateMultiplier +
                 ", fillMultiplier=" + fillMultiplier +
                 ", capacity=" + capacity +
+                ", leftPlaces=" + leftPlaces +
                 '}';
     }
 }
