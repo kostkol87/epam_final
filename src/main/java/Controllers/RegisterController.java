@@ -28,8 +28,11 @@ public class RegisterController extends HttpServlet {
         User newUser = new User();
         try {
             String eMail = req.getParameter("loginField");
-            if (eMail == null) {
+            if (eMail == null && session.getAttribute("user")==null) {
                 req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
+                return;
+            }else if (session.getAttribute("user")!=null){
+                req.getRequestDispatcher("jsp/workspace.jsp").forward(req,resp);
                 return;
             }
             String password = req.getParameter("passField");
