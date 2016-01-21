@@ -9,7 +9,7 @@
     <title>Workspace</title>
 </head>
 <body>
-<h2>Hello, ${pageContext.session.getAttribute('userMail').getName()} ${pageContext.session.getAttribute('userMail').getSurname()}</h2><br>
+<h2>Hello, ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()}</h2><br>
 this is the main screen!
 <br>
 <c:forEach items="${rows}" var="row">

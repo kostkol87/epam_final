@@ -24,21 +24,24 @@ public class VerificationController extends HttpServlet {
     }
 
     protected void processVerify(HttpServletRequest req, HttpServletResponse resp) {
-
-        HttpSession session = req.getSession(true);
-        String login = (String) req.getParameter("loginField");
-        String password = (String) req.getParameter("passField");
-        System.out.println(login + "   " + password);
-        User user = new EntityCollections().getUser(login);
         try {
-            if (session.getAttribute("userMail") != null) {
+                String login = (String) req.getParameter("loginField");
+                String password = (String) req.getParameter("passField");
+            if (login == null || password == null){
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
-            }else if (password.equals(user.getPassword())) {
-                session.setAttribute("userMail", user);
-                req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
-            } else {
-                req.getRequestDispatcher("jsp/loginFail.jsp").forward(req, resp);
             }
+
+                System.out.println(login + "   " + password);
+                User user = new EntityCollections().getUser(login);
+
+
+                if (password.equals(user.getPassword())) {
+                    HttpSession session = req.getSession(true);
+                    session.setAttribute("user", user);
+                    req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
+                } else {
+                    req.getRequestDispatcher("jsp/loginFail.jsp").forward(req, resp);
+                }
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
         }

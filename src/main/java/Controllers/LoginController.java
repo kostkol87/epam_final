@@ -25,7 +25,7 @@ public class LoginController extends HttpServlet{
 
     protected void processLogin(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession(true);
-        User sUser = (User) session.getAttribute("userMail");
+        User sUser = (User) session.getAttribute("user");
         try{
             if (sUser != null) {
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);

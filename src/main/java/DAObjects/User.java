@@ -1,12 +1,5 @@
 package DAObjects;
 
-import Utils.ConnectionPool.ConnectionPool;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class User {
     private int id;
     private String email;
@@ -72,5 +65,16 @@ public class User {
         this.role = role;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", patronomic='" + patronomic + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

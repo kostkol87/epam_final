@@ -1,6 +1,7 @@
-package DAObjects;
+package Utils;
 
 
+import DAObjects.Direction;
 import Utils.ConnectionPool.ConnectionPool;
 
 import java.sql.Connection;

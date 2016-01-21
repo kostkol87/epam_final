@@ -27,11 +27,13 @@ public class LocaleController extends HttpServlet {
             {
                 case "/locale/ru_RU": {
                     session.setAttribute("locale", "ru_RU");
+                    resp.setHeader("Referer", "ru_RU");
                     resp.sendRedirect(req.getHeader("Referer"));
                     break;
                 }
                 case "/locale/en_US": {
                     session.setAttribute("locale", "en_US");
+                    resp.setHeader("Referer", "en_US");
                     resp.sendRedirect(req.getHeader("Referer"));
                     break;
                 }

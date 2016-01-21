@@ -4,19 +4,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
-
     <fmt:bundle basename="local">
-    <title><fmt:message key="WelcomeStr"/> </title>
-
+        <title></title>
 </head>
-
 <body>
-
-<h1><fmt:message key="WelcomeStr"/> </h1><br>
-<h2>
-    <fmt:message key="MakeChoice"/><br>
-    <b><a href="/login"><fmt:message key="LogIn"/> </a> | <a href="/jsp/register.jsp"><fmt:message key="Registration"/> </a></b>
-</h2>
+<h2>User with such e-mail already exist!</h2>
+<input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/'"><br>
 <a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>
 </body>

@@ -33,7 +33,8 @@ public class EntityCollections {
                     user.setPatronomic(resultSet.getString("patronomic"));
                     user.setRole(resultSet.getInt("role"));
                 }
-                System.out.println("just returned user");
+                preparedStatement.close();
+                pool.free(connection);
                 return user;
             }
 
@@ -41,5 +42,47 @@ public class EntityCollections {
             throw new RuntimeException(e);
         }
         return user;
+    }
+    public boolean addUser(User user){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT id FROM user WHERE email=?");
+            preparedStatement.setString(1, user.getEmail());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int id=0;
+            while (resultSet.next()){
+                id += resultSet.getInt("id");
+                if (id > 0){
+                    System.out.println("mail arleady exist");
+                    preparedStatement.close();
+                    pool.free(connection);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO flight_discounter.user " +
+                            "(email, password, surname, name, patronomic, role)" +
+                            " VALUES (?,?,?,?,?,1)");
+            preparedStatement.setString(1,user.getEmail());
+            preparedStatement.setString(2,user.getPassword());
+            preparedStatement.setString(3,user.getSurname());
+            preparedStatement.setString(4,user.getName());
+            preparedStatement.setString(5,user.getPatronomic());
+            System.out.println(user);
+            preparedStatement.executeUpdate();
+            System.out.println("user added!");
+            preparedStatement.close();
+            pool.free(connection);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }
