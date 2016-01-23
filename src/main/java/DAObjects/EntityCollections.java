@@ -109,11 +109,12 @@ public static int directionsCount;
                 newDirection.setDepTime(sdf.parse(resultSet.getString("dep_date")));
                 newDirection.setDestination(resultSet.getString("destination"));
                 newDirection.setDestTime(sdf.parse(resultSet.getString("dest_date")));
-                newDirection.setBasicPrice(resultSet.getDouble("basic_price"));
                 newDirection.setDateMultiplier(resultSet.getDouble("date_multiplier"));
                 newDirection.setFillMultiplier(resultSet.getDouble("fill_multiplier"));
                 newDirection.setCapacity(resultSet.getInt("capacity"));
                 newDirection.setLeftPlaces(resultSet.getInt("left_places"));
+                newDirection.setBasicPrice(resultSet.getDouble("basic_price"));
+;
                 directions.add(newDirection);
             }
         } catch (SQLException | ParseException e) {

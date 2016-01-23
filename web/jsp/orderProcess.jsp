@@ -7,8 +7,8 @@
 <body>
 
 <h2>Customize you order:</h2>
-
-<form action="/orderConfirm">
+<b>attention, options you have choised will be accepted for all passangers!</b>
+<form action="/payment">
     <table border="1">
         <tr>
             <td>
@@ -58,22 +58,24 @@
 
         <tr>
             <td>
-                Need baggage:
+                Need baggage(+45€):
             </td>
             <td>
-                <input type="checkbox" name="baggage" placeholder="Passangers count">
+                <input type="checkbox" name="baggage">
             </td>
         </tr>
 
         <tr>
             <td>
-                Need priority queue:
+                Need priority queue(+30€):
             </td>
             <td>
-                <input type="checkbox" name="priotityQueue" placeholder="Passangers count">
+                <input type="checkbox" name="priotityQueue">
             </td>
         </tr>
     </table>
+    <br>
+
     confirm and go to the payment: <br>
     <input type="submit" value="Confirm">
 </form>

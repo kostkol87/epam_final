@@ -15,6 +15,7 @@
 <fmt:bundle basename="local">
 <h2>
     Hello, ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()}</h2>
+    <a href="/myOrders">My orders</a>
 <br>
 Full list of available flights:
 
