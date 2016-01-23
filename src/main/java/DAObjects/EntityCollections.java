@@ -88,7 +88,8 @@ public class EntityCollections {
         }
         return true;
     }
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+public static int directionsCount;
     public List<Direction> getDirections(){
         List<Direction> directions = new ArrayList<>();
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -118,6 +119,8 @@ public class EntityCollections {
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
+        directionsCount = directions.size();
+        pool.free(connection);
         return directions;
     }
 }

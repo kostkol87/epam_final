@@ -55,7 +55,8 @@ public class Direction {
     }
 
     public double getBasicPrice() {
-        return basicPrice;
+
+        return Math.round(basicPrice    );
     }
 
     public void setBasicPrice(double basicPrice) {

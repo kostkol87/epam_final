@@ -28,6 +28,7 @@ public class LoginController extends HttpServlet{
         User sUser = (User) session.getAttribute("user");
         try{
             if (sUser != null) {
+                session.setAttribute("page", 1);
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             } else {
                 req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);

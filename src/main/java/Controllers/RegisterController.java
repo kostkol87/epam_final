@@ -29,9 +29,11 @@ public class RegisterController extends HttpServlet {
         try {
             String eMail = req.getParameter("loginField");
             if (eMail == null && session.getAttribute("user")==null) {
+                session.setAttribute("page", 1);
                 req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
                 return;
             }else if (session.getAttribute("user")!=null){
+                session.setAttribute("page", 1);
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req,resp);
                 return;
             }
@@ -51,6 +53,7 @@ public class RegisterController extends HttpServlet {
                 req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
             } else {
                 session.setAttribute("user", newUser);
+                session.setAttribute("page", 1);
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             }
         } catch (ServletException | IOException e) {

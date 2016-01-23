@@ -9,7 +9,7 @@
 </head>
 <body>
 <h2>User with such e-mail already exist!</h2>
-<input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/'"><br>
+<input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/'; "><br>
 <a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>
 </body>
