@@ -29,10 +29,10 @@ public class PaymentComplete extends HttpServlet{
         System.out.println("paramets id >>>>>> " + paramId);
         if (paramId != null){
             System.out.println("all od, param was fount, it is" + paramId);
-            new EntitiesUtils().updateOrderPay(Integer.parseInt(paramId), true);
+            EntitiesUtils.updateOrderPay(Integer.parseInt(paramId), true);
         }else {
             if (order != null) {
-                new EntitiesUtils().updateOrderPay(order.getId(), true);
+                EntitiesUtils.updateOrderPay(order.getId(), true);
             }
         }
         try {

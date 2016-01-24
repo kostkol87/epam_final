@@ -28,7 +28,7 @@ public class Order extends HttpServlet {
         HttpSession session = req.getSession(true);
         int orderId = Integer.parseInt(req.getParameter("id"));
         Direction direction = new Direction();
-        List<Direction> directions = new EntitiesUtils().getDirections();
+        List<Direction> directions =  EntitiesUtils.getDirections();
         for (Direction direct : directions) {
             if (direct.getId() == orderId) {
                 try{

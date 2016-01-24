@@ -33,7 +33,7 @@ public class Verification extends HttpServlet {
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             }
 
-                User user = new EntitiesUtils().getUser(login);
+                User user = EntitiesUtils.getUser(login);
 
 
                 if (password.equals(user.getPassword())) {

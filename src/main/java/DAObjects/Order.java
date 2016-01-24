@@ -1,5 +1,8 @@
 package DAObjects;
 
+/**
+ * order entity
+ */
 public class Order {
     private int id;
     private Direction direction;

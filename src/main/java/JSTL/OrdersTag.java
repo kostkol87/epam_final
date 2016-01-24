@@ -8,10 +8,19 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
 
+
+/**
+ * Custom JSTL tag, generates html table filled by orders of current user
+ */
+
 public class OrdersTag extends TagSupport{
     private StringBuilder tagView;
     private int userId;
 
+    /**
+     * Required tag
+     * @param userId - witch orders will show
+     */
     public void setUserId(int userId) {
         System.out.println("Attribute OK in orders");
         this.userId = userId;
@@ -20,7 +29,7 @@ public class OrdersTag extends TagSupport{
     @Override
     public int doStartTag() throws JspException {
         tagView = new StringBuilder();
-        List<Order> orders = new EntitiesUtils().getOrders(userId);
+        List<Order> orders = EntitiesUtils.getOrders(userId);
         System.out.println(orders.size() + " is a size");
         try{
             tagView.append("<table border=\"1\">");

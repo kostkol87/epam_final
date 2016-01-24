@@ -65,7 +65,7 @@ public class Payment extends HttpServlet{
 
         summa = summa*count;
         session.setAttribute("summa", summa);
-        DAObjects.Order order = new EntitiesUtils().addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
+        DAObjects.Order order = EntitiesUtils.addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
         if (order == null){
             try {
                 req.setAttribute("capacityFail", true);

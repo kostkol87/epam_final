@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntitiesUtils {
-    List<Direction> directions;
-    List<Order> orders;
+    static List<Direction> directions;
+    static List<Order> orders;
     List<User> users;
 
-    public User getUser(int id){
+    public static User getUser(int id) {
         User user = new User();
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -41,13 +41,13 @@ public class EntitiesUtils {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             pool.free(connection);
         }
         return user;
     }
 
-    public User getUser(String email) {
+    public static User getUser(String email) {
         User user = new User();
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -74,13 +74,13 @@ public class EntitiesUtils {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             pool.free(connection);
         }
         return user;
     }
 
-    public boolean addUser(User user) {
+    public static boolean addUser(User user) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
@@ -119,21 +119,21 @@ public class EntitiesUtils {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             pool.free(connection);
         }
         return true;
     }
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static int directionsCount;
 
-    public Direction getDirection(int id) {
+    public static Direction getDirection(int id) {
         Direction direction = new Direction();
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement("" +
                     "SELECT departure, dep_date, destination, dest_date," +
                     " basic_price, date_multiplier, fill_multiplier, " +
@@ -143,9 +143,9 @@ public class EntitiesUtils {
             while (resultSet.next()) {
                 direction.setId(id);
                 direction.setDeparture(resultSet.getString("departure"));
-                direction.setDepTime(sdf.parse(resultSet.getString("dep_date")));
+                direction.setDepTime(SDF.parse(resultSet.getString("dep_date")));
                 direction.setDestination(resultSet.getString("destination"));
-                direction.setDestTime(sdf.parse(resultSet.getString("dest_date")));
+                direction.setDestTime(SDF.parse(resultSet.getString("dest_date")));
                 direction.setDateMultiplier(resultSet.getDouble("date_multiplier"));
                 direction.setFillMultiplier(resultSet.getDouble("fill_multiplier"));
                 direction.setCapacity(resultSet.getInt("capacity"));
@@ -155,14 +155,14 @@ public class EntitiesUtils {
 
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             pool.free(connection);
         }
 
         return direction;
     }
 
-    public List<Direction> getDirections() {
+    public static List<Direction> getDirections() {
         List<Direction> directions = new ArrayList<>();
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -175,15 +175,15 @@ public class EntitiesUtils {
             ResultSet resultSet = preparedStatement.executeQuery();
             Direction newDirection;
             while (resultSet.next()) {
-                if(resultSet.getInt("left_places")<1){
+                if (resultSet.getInt("left_places") < 1) {
                     continue;
                 }
                 newDirection = new Direction();
                 newDirection.setId(resultSet.getInt("id"));
                 newDirection.setDeparture(resultSet.getString("departure"));
-                newDirection.setDepTime(sdf.parse(resultSet.getString("dep_date")));
+                newDirection.setDepTime(SDF.parse(resultSet.getString("dep_date")));
                 newDirection.setDestination(resultSet.getString("destination"));
-                newDirection.setDestTime(sdf.parse(resultSet.getString("dest_date")));
+                newDirection.setDestTime(SDF.parse(resultSet.getString("dest_date")));
                 newDirection.setDateMultiplier(resultSet.getDouble("date_multiplier"));
                 newDirection.setFillMultiplier(resultSet.getDouble("fill_multiplier"));
                 newDirection.setCapacity(resultSet.getInt("capacity"));
@@ -193,15 +193,16 @@ public class EntitiesUtils {
             }
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             pool.free(connection);
         }
         directionsCount = directions.size();
 
         return directions;
     }
-    public Order addOrder(Direction direction, User user,int quantity, boolean baggage, boolean priority, double summa){
-        if (quantity>direction.getLeftPlaces()){
+
+    public static Order addOrder(Direction direction, User user, int quantity, boolean baggage, boolean priority, double summa) {
+        if (quantity > direction.getLeftPlaces()) {
             return null;
         }
         Order newOrder = new Order();
@@ -236,86 +237,103 @@ public class EntitiesUtils {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             pool.free(connection);
         }
         return newOrder;
     }
-    public List<Order> getOrders(int id){
+
+    public static List<Order> getOrders(int id) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
+        User user = null;
         orders = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, direction, quantity, baggage, priority_queue, client, summa, paid FROM orders WHERE client=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             Order order;
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 order = new Order();
                 order.setId(resultSet.getInt("id"));
                 order.setDirection(getDirection(resultSet.getInt("direction")));
                 order.setQuantity(resultSet.getInt("quantity"));
                 order.setBaggage(resultSet.getBoolean("baggage"));
                 order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
-                order.setClient(getUser(resultSet.getInt("client")));
+                if (user == null){
+                    user = getUser(resultSet.getInt("client"));
+                    order.setClient(user);
+                }else {
+                    order.setClient(user);
+                }
                 order.setSumma(resultSet.getDouble("summa"));
                 order.setPaid(resultSet.getBoolean("paid"));
                 orders.add(order);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             pool.free(connection);
         }
+        user = null;
         return orders;
     }
-public Order getOrder(int id){
-    Order order = new Order();
-    ConnectionPool pool = ConnectionPool.getInstance();
-    Connection connection = pool.getConnection();
-    try {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, direction, quantity, baggage, priority_queue, client, summa, paid FROM orders WHERE id=?");
-        preparedStatement.setInt(1, id);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()){
-            order.setId(resultSet.getInt("id"));
-            order.setDirection(getDirection(resultSet.getInt("direction")));
-            order.setQuantity(resultSet.getInt("quantity"));
-            order.setBaggage(resultSet.getBoolean("baggage"));
-            order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
-            order.setClient(getUser(resultSet.getInt("client")));
-            order.setSumma(resultSet.getDouble("summa"));
-            order.setPaid(resultSet.getBoolean("paid"));
+
+    public static Order getOrder(int id) {
+        Order order = new Order();
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        User user = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, direction, quantity, baggage, priority_queue, client, summa, paid FROM orders WHERE id=?");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                order.setId(resultSet.getInt("id"));
+                order.setDirection(getDirection(resultSet.getInt("direction")));
+                order.setQuantity(resultSet.getInt("quantity"));
+                order.setBaggage(resultSet.getBoolean("baggage"));
+                order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
+//                order.setClient(getUser(resultSet.getInt("client")));
+                if (user == null){
+                    user = getUser(resultSet.getInt("client"));
+                    order.setClient(user);
+                }else {
+                    order.setClient(user);
+                }
+                order.setSumma(resultSet.getDouble("summa"));
+                order.setPaid(resultSet.getBoolean("paid"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        user = null;
+        return order;
     }
-    return order;
-}
-    public void updateOrderPay(int orderId, boolean isPaid){
-        EntitiesUtils entitiesUtils = new EntitiesUtils();
+
+    public static void updateOrderPay(int orderId, boolean isPaid) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT left_places FROM directions WHERE id=(SELECT direction FROM  orders WHERE id=?)");
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            int left_places=0;
-            while (resultSet.next()){
-               left_places = resultSet.getInt("left_places");
+            int left_places = 0;
+            while (resultSet.next()) {
+                left_places = resultSet.getInt("left_places");
             }
             preparedStatement.close();
-            Order order = entitiesUtils.getOrder(orderId);
-            if (order!=null) {
+            Order order = EntitiesUtils.getOrder(orderId);
+            if (order != null) {
                 if (left_places >= order.getQuantity()) {
                     preparedStatement = connection.prepareStatement("UPDATE orders SET paid=? WHERE id = ?");
                     preparedStatement.setBoolean(1, isPaid);
                     preparedStatement.setInt(2, orderId);
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
-                    if (isPaid){
+                    if (isPaid) {
                         preparedStatement = connection.prepareStatement("UPDATE directions SET left_places=left_places-? WHERE id = (SELECT direction FROM  orders WHERE id=?)");
-                        preparedStatement.setInt(1,order.getQuantity());
+                        preparedStatement.setInt(1, order.getQuantity());
                         preparedStatement.setInt(2, orderId);
                         preparedStatement.executeUpdate();
                         preparedStatement.close();
@@ -325,7 +343,7 @@ public Order getOrder(int id){
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             pool.free(connection);
         }
     }

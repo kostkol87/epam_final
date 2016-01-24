@@ -49,7 +49,7 @@ public class Register extends HttpServlet {
             newUser.setPatronomic(patronomic);
 
 
-            if (!new EntitiesUtils().addUser(newUser)) {
+            if (!EntitiesUtils.addUser(newUser)) {
                 req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
             } else {
                 session.setAttribute("user", newUser);

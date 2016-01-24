@@ -26,7 +26,6 @@ public class SaveOrder extends HttpServlet{
         System.out.println(">>>>> in save!");
         HttpSession session = req.getSession(true);
         DAObjects.Order order = (DAObjects.Order) session.getAttribute("order");
-//        new EntitiesUtils().updateOrderPay(order.getId(), false);
         try {
             req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {
