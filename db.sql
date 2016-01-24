@@ -1,13 +1,7 @@
 CREATE TABLE cities
 (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    city VARCHAR(128) NOT NULL,
-    country INT NOT NULL
-);
-CREATE TABLE countries
-(
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    country VARCHAR(128) NOT NULL
+    city VARCHAR(128) NOT NULL
 );
 CREATE TABLE directions
 (
@@ -16,10 +10,11 @@ CREATE TABLE directions
     dep_date DATETIME NOT NULL,
     destination VARCHAR(256) NOT NULL,
     dest_date DATETIME NOT NULL,
-    basicPrice DOUBLE NOT NULL,
-    dateMultiplier DOUBLE DEFAULT 1 NOT NULL,
-    fillMultiplier DOUBLE DEFAULT 1 NOT NULL,
-    capacity INT NOT NULL
+    basic_price DOUBLE NOT NULL,
+    date_multiplier DOUBLE DEFAULT 1 NOT NULL,
+    fill_multiplier DOUBLE DEFAULT 1 NOT NULL,
+    capacity INT NOT NULL,
+    left_places INT
 );
 CREATE TABLE orders
 (
@@ -49,8 +44,6 @@ CREATE TABLE user
 );
 CREATE UNIQUE INDEX unique_city ON cities (city);
 CREATE UNIQUE INDEX unique_id ON cities (id);
-CREATE UNIQUE INDEX unique_country ON countries (country);
-CREATE UNIQUE INDEX unique_id ON countries (id);
 CREATE UNIQUE INDEX unique_role ON roles (role);
 CREATE UNIQUE INDEX unique_email ON user (email);
 CREATE UNIQUE INDEX unique_id ON user (id);

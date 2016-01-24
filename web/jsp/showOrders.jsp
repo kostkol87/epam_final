@@ -4,10 +4,16 @@
 <%@ taglib uri="/WEB-INF/tld/taglib.tld" prefix="zz" %>
 <html>
 <head>
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
+    <fmt:bundle basename="local">
+    <title>Yout orders</title>
 </head>
 <body>
-  <h1>Your orders:</h1>
+<h1>Your orders:</h1>
 <zz:orders userId="${pageContext.session.getAttribute('user').getId()}"/>
+<input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/jsp/workspace.jsp'"><br>
+<a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
+</fmt:bundle>
 </body>
 </html>

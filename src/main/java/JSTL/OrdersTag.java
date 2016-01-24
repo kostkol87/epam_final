@@ -32,33 +32,34 @@ public class OrdersTag extends TagSupport{
         List<Order> orders = EntitiesUtils.getOrders(userId);
         System.out.println(orders.size() + " is a size");
         try{
-            tagView.append("<table border=\"1\">");
-            tagView.append("<tr>");
-            tagView.append("<td> Departure </td>");
-            tagView.append("<td> Destination </td>");
-            tagView.append("<td> Departure Time </td>");
-            tagView.append("<td> Destination Time </td>");
-            tagView.append("<td> Passenger's count </td>");
-            tagView.append("<td> Baggage </td>");
-            tagView.append("<td> Priority queue </td>");
-            tagView.append("<td> Summa (€)</td>");
-            tagView.append("<td> Is paid:</td>");
-            tagView.append("<tr>");
-            tagView.append("</tr>");
+            tagView.append("<table border=\"1\">"+
+                            "<tr>"+
+                            "<td> Departure </td>"+
+                            "<td> Destination </td>"+
+                            "<td> Departure Time </td>"+
+                            "<td> Destination Time </td>"+
+                            "<td> Passenger's count </td>"+
+                            "<td> Baggage </td>"+
+                            "<td> Priority queue </td>"+
+                            "<td> Summa (€)</td>"+
+                            "<td> Is paid:</td>"+
+                            "<tr>"+
+                            "</tr>");
             for (Order order: orders){
-                tagView.append("<tr>");
-                tagView.append("<td>" + order.getDirection().getDeparture() + "</td>");
-                tagView.append("<td>" + order.getDirection().getDestination() + "</td>");
-                tagView.append("<td>" + order.getDirection().getDepTime() + "</td>");
-                tagView.append("<td>" + order.getDirection().getDestTime() + "</td>");
-                tagView.append("<td>" + order.getQuantity() + "</td>");
-                tagView.append("<td>" + order.isBaggage() + "</td>");
-                tagView.append("<td>" + order.isPriorityQueue() + "</td>");
-                tagView.append("<td>" + order.getSumma() + "</td>");
-                tagView.append("<td>" + order.isPaid() + "</td>");
+                tagView.append("<tr>"+
+                                "<td>" + order.getDirection().getDeparture() + "</td>"+
+                                "<td>" + order.getDirection().getDestination() + "</td>"+
+                                "<td>" + order.getDirection().getDepTime() + "</td>"+
+                                "<td>" + order.getDirection().getDestTime() + "</td>"+
+                                "<td>" + order.getQuantity() + "</td>"+
+                                "<td>" + order.isBaggage() + "</td>"+
+                                "<td>" + order.isPriorityQueue() + "</td>"+
+                                "<td>" + order.getSumma() + "</td>"+
+                                "<td>" + order.isPaid() + "</td>");
                 if (!order.isPaid()){
-                    tagView.append("<td> <input type=\"button\" value=\"CHANGE\" onclick=\"window.location = '/changeOrder?id=" + order.getId() + "'\"</td>");
-                    tagView.append("<td> <input type=\"button\" value=\"PAY\" onclick=\"window.location = '/payOk?id=" + order.getId() + "'\"</td>");
+                    tagView.append("<td> <input type=\"button\" value=\"CHANGE\" onclick=\"window.location = '/changeOrder?id=" + order.getId() + "'\"</td>"+
+                                    "<td> <input type=\"button\" value=\"PAY\" onclick=\"window.location = '/payOk?id=" + order.getId() + "'\"</td>"+
+                                    "<td> <input type=\"button\" value=\"REMOVE\" onclick=\"window.location = '/changeOrder?removeId=" + order.getId() + "'\"</td>");
                 }
 //
 

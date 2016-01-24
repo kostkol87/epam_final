@@ -2,6 +2,7 @@ package DAObjects;
 
 import Utils.ConnectionPool.ConnectionPool;
 import com.mysql.jdbc.Statement;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntitiesUtils {
+    private static final Logger log = Logger.getLogger(EntitiesUtils.class);
     static List<Direction> directions;
     static List<Order> orders;
     List<User> users;
@@ -40,6 +42,7 @@ public class EntitiesUtils {
                 preparedStatement.close();
             }
         } catch (SQLException e) {
+            log.warn("SQLException in getUser(id)");
             throw new RuntimeException(e);
         } finally {
             pool.free(connection);
@@ -73,6 +76,7 @@ public class EntitiesUtils {
             }
 
         } catch (SQLException e) {
+            log.warn("SQLException in getUser(eMail)");
             throw new RuntimeException(e);
         } finally {
             pool.free(connection);
@@ -92,13 +96,14 @@ public class EntitiesUtils {
             while (resultSet.next()) {
                 id += resultSet.getInt("id");
                 if (id > 0) {
-                    System.out.println("mail arleady exist");
+                    log.debug("mail arleady exist in addUser");
                     preparedStatement.close();
                     pool.free(connection);
                     return false;
                 }
             }
         } catch (SQLException e) {
+            log.warn("SQLException in addOrder");
             throw new RuntimeException(e);
         }
         try {
@@ -113,11 +118,12 @@ public class EntitiesUtils {
             preparedStatement.setString(5, user.getPatronomic());
             System.out.println(user);
             preparedStatement.executeUpdate();
-            System.out.println("user added!");
+            log.debug("SQLException in addOrder");
             preparedStatement.close();
             pool.free(connection);
 
         } catch (SQLException e) {
+            log.warn("SQLException in addOrder");
             e.printStackTrace();
         } finally {
             pool.free(connection);
@@ -153,7 +159,11 @@ public class EntitiesUtils {
                 direction.setBasicPrice(resultSet.getDouble("basic_price"));
             }
 
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
+            log.warn("SQLException in getDirection(id)");
+            e.printStackTrace();
+        } catch (ParseException e) {
+            log.warn("ParseException in getDirection(id)");
             e.printStackTrace();
         } finally {
             pool.free(connection);
@@ -191,7 +201,11 @@ public class EntitiesUtils {
                 newDirection.setBasicPrice(resultSet.getDouble("basic_price"));
                 directions.add(newDirection);
             }
-        } catch (SQLException | ParseException e) {
+        } catch (SQLException e) {
+            log.warn("SQLException in addOrder");
+            e.printStackTrace();
+        } catch (ParseException e) {
+            log.warn("ParseException in addOrder");
             e.printStackTrace();
         } finally {
             pool.free(connection);
@@ -236,6 +250,7 @@ public class EntitiesUtils {
 
 
         } catch (SQLException e) {
+            log.warn("SQLException in addOrder");
             e.printStackTrace();
         } finally {
             pool.free(connection);
@@ -260,10 +275,10 @@ public class EntitiesUtils {
                 order.setQuantity(resultSet.getInt("quantity"));
                 order.setBaggage(resultSet.getBoolean("baggage"));
                 order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
-                if (user == null){
+                if (user == null) {
                     user = getUser(resultSet.getInt("client"));
                     order.setClient(user);
-                }else {
+                } else {
                     order.setClient(user);
                 }
                 order.setSumma(resultSet.getDouble("summa"));
@@ -271,6 +286,7 @@ public class EntitiesUtils {
                 orders.add(order);
             }
         } catch (SQLException e) {
+            log.warn("SQLException in getOrders");
             e.printStackTrace();
         } finally {
             pool.free(connection);
@@ -295,16 +311,17 @@ public class EntitiesUtils {
                 order.setBaggage(resultSet.getBoolean("baggage"));
                 order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
 //                order.setClient(getUser(resultSet.getInt("client")));
-                if (user == null){
+                if (user == null) {
                     user = getUser(resultSet.getInt("client"));
                     order.setClient(user);
-                }else {
+                } else {
                     order.setClient(user);
                 }
                 order.setSumma(resultSet.getDouble("summa"));
                 order.setPaid(resultSet.getBoolean("paid"));
             }
         } catch (SQLException e) {
+            log.warn("SQLException in getOrder(id)");
             e.printStackTrace();
         }
         user = null;
@@ -342,8 +359,46 @@ public class EntitiesUtils {
                 }
             }
         } catch (SQLException e) {
+            log.warn("SQLException in updateOrderPay");
             e.printStackTrace();
         } finally {
+            pool.free(connection);
+        }
+    }
+
+    public static void removeOrder(int orderId) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM orders WHERE id=?"
+            );
+            preparedStatement.setInt(1, orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.warn("SQLException in removeOrder");
+            e.printStackTrace();
+        }finally {
+            pool.free(connection);
+        }
+    }
+
+    public static void changeOrder(int orderId, int passangersCount, boolean needBaggage, boolean needPriority){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE orders SET quantity=?, baggage=?, priority_queue=? WHERE  id=?"
+            );
+            preparedStatement.setInt(1, passangersCount);
+            preparedStatement.setBoolean(2, needBaggage);
+            preparedStatement.setBoolean(3, needPriority);
+            preparedStatement.setInt(4, orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.warn("SQLException in changeOrder");
+            e.printStackTrace();
+        }finally {
             pool.free(connection);
         }
     }

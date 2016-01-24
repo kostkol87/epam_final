@@ -1,6 +1,5 @@
 package Utils;
 
-
 import DAObjects.Direction;
 import Utils.ConnectionPool.ConnectionPool;
 
@@ -81,7 +80,6 @@ public class DirectionsGenerator {
         ConnectionPool.getInstance().free(connection);
     }
     public static void main(String[] args) throws SQLException {
-//        System.out.println(new LocalDateTime());
         new DirectionsGenerator().directionToDb();
     }
 }

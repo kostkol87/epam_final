@@ -23,6 +23,11 @@ public class Register extends HttpServlet {
         processRegister(req, resp);
     }
 
+    /**
+     * getting all atributes from register.jsp and createst new {@link DAObjects.User}
+     * @param req
+     * @param resp
+     */
     protected void processRegister(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession(true);
         User newUser = new User();

@@ -1,5 +1,7 @@
 package Utils.ConnectionPool;
 
+import org.apache.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,6 +13,7 @@ import java.util.Properties;
 
 public class ConnectionPool {
 
+    private static final Logger log = Logger.getLogger(ConnectionPool.class);
     public static final String PROPERTIES_PATH = "C:\\epam_final\\src\\main\\resources\\pool.properties";
     private static ConnectionPool INSTANCE;
     private HashMap<Connection, Boolean> thePool;
@@ -22,6 +25,7 @@ public class ConnectionPool {
             synchronized (ConnectionPool.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new ConnectionPool();
+                    log.debug("connection pool instance was created!");
                 }
             }
 
@@ -50,22 +54,23 @@ public class ConnectionPool {
                 thePool.put(DriverManager.getConnection(URL, USER, PASSWORD), true);
             }
 
-        } catch (IOException|ClassNotFoundException | SQLException e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public Connection getConnection(){
-        for (Map.Entry<Connection, Boolean> entry : thePool.entrySet()){
-            if (entry.getValue()){
-                synchronized (this){
+
+    public Connection getConnection() {
+        for (Map.Entry<Connection, Boolean> entry : thePool.entrySet()) {
+            if (entry.getValue()) {
+                synchronized (this) {
                     Connection key = entry.getKey();
                     thePool.put(key, false);
-                    System.out.println("gived connection from pool");
+                    log.debug("get connection from pool");
                     return key;
                 }
             }
         }
-        try{
+        try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -73,15 +78,14 @@ public class ConnectionPool {
         return getConnection();
     }
 
-    public void free(Connection connection){
-        if (thePool.containsKey(connection)){
+    public void free(Connection connection) {
+        if (thePool.containsKey(connection)) {
             thePool.put(connection, true);
-            System.out.println("connection was returned to pool");
-        }else {
-//            log.warn("Connection does not from pool!!! it was simply closed");
+            log.debug("returned connection to pool");
+        } else {
             try {
+                log.warn("connection was closed!!!");
                 connection.close();
-                System.out.println("connection isn't from the pool, it was cloesd!");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

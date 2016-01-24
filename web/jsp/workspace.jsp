@@ -5,6 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
 
@@ -22,7 +23,7 @@ Full list of available flights:
 <h3>Directions list:</h3><br>
 <zz:directions page="${pageContext.session.getAttribute('page')}"/><br>
 <a href="/page/l"> << </a> ...${pageContext.session.getAttribute('page')}... <a href="/page/r"> >> </a><br>
-<a href="/logout"><fmt:message key="LogOut"/></a><br>
+<a href="/logout"><fmt:message key="LogOut"/></a><br><br>
 <a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>
 </body>

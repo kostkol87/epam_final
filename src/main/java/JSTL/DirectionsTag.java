@@ -34,32 +34,29 @@ public class DirectionsTag extends TagSupport {
 
         try {
 
-            tagView.append("<table border=\"1\">");
-            tagView.append("<tr>");
-            tagView.append("<td> Departure </td>");
-            tagView.append("<td> Destination </td>");
-            tagView.append("<td> Departure Time </td>");
-            tagView.append("<td> Destination Time </td>");
-            tagView.append("<td> Price (€)</td>");
-            tagView.append("<td> Places left</td>");
-            tagView.append("<td> Buy it!</td>");
-            tagView.append("<tr>");
+            tagView.append("<table border=\"1\">"+
+                            "<tr>"+
+                            "<td> Departure </td>"+
+                            "<td> Destination </td>"+
+                            "<td> Departure Time </td>"+
+                            "<td> Destination Time </td>"+
+                            "<td> Price (€)</td>"+
+                            "<td> Places left</td>"+
+                            "<td> Buy it!</td>"+
+                            "<tr>");
 
             tagView.append("</tr>");
             for (int i = (page - 1) * 25; i < ON_PAGE * page; i++) {
                 if (i == count) break;
-                tagView.append("<tr>");
-
-                tagView.append("<td>" + directions.get(i).getDeparture() + "</td>");
-                tagView.append("<td>" + directions.get(i).getDestination() + "</td>");
-                tagView.append("<td>" + directions.get(i).getDepTime() + "</td>");
-                tagView.append("<td>" + directions.get(i).getDestTime() + "</td>");
-                tagView.append("<td>" + directions.get(i).getBasicPrice() + "</td>");
-                tagView.append("<td>" + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + "</td>");
-                tagView.append("<td> <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" + directions.get(i).getId() + "'\"</td>");
-//                tagView.append("<td>" + direction.getDeparture() + "</td>");
-
-                tagView.append("</tr>");
+                tagView.append("<tr>"+
+                                "<td>" + directions.get(i).getDeparture() + "</td>"+
+                                "<td>" + directions.get(i).getDestination() + "</td>"+
+                                "<td>" + directions.get(i).getDepTime() + "</td>"+
+                                "<td>" + directions.get(i).getDestTime() + "</td>"+
+                                "<td>" + directions.get(i).getBasicPrice() + "</td>"+
+                                "<td>" + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + "</td>"+
+                                "<td> <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" + directions.get(i).getId() + "'\"</td>"+
+                                "</tr>");
 
             }
             tagView.append("</table>");

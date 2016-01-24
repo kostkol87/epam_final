@@ -23,21 +23,25 @@ public class Verification extends HttpServlet {
         processVerify(req, resp);
     }
 
+    /**
+     * check if user's login(email) or password incorrect redirects to fail-page,
+     * if all ok - saved into seesion object {@link DAObjects.User}
+     * @param req
+     * @param resp
+     */
+
     protected void processVerify(HttpServletRequest req, HttpServletResponse resp) {
         try {
                 HttpSession session = req.getSession(true);
                 String login = (String) req.getParameter("loginField");
                 String password = (String) req.getParameter("passField");
             if (login == null || password == null){
-//                session.setAttribute("page", 1);
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             }
 
                 User user = EntitiesUtils.getUser(login);
 
-
                 if (password.equals(user.getPassword())) {
-
                     session.setAttribute("user", user);
                     session.setAttribute("page", 1);
                     req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);

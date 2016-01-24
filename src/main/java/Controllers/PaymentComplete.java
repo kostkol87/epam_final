@@ -26,9 +26,7 @@ public class PaymentComplete extends HttpServlet{
         HttpSession session = req.getSession(true);
         String paramId = req.getParameter("id");
         DAObjects.Order order = (DAObjects.Order) session.getAttribute("order");
-        System.out.println("paramets id >>>>>> " + paramId);
         if (paramId != null){
-            System.out.println("all od, param was fount, it is" + paramId);
             EntitiesUtils.updateOrderPay(Integer.parseInt(paramId), true);
         }else {
             if (order != null) {
