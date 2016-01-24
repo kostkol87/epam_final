@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAObjects.EntityCollections;
+import DAObjects.EntitiesUtils;
 import DAObjects.User;
 
 import javax.servlet.ServletException;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/logged")
-public class VerificationController extends HttpServlet {
+public class Verification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processVerify(req, resp);
@@ -33,7 +33,7 @@ public class VerificationController extends HttpServlet {
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             }
 
-                User user = new EntityCollections().getUser(login);
+                User user = new EntitiesUtils().getUser(login);
 
 
                 if (password.equals(user.getPassword())) {

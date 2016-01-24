@@ -72,7 +72,7 @@ public class Direction {
             price += (dateMultiplier-1)*basicPrice;
 
         }
-        if((double)capacity/(double)leftPlaces < 0.5){
+        if((double)leftPlaces/(double)capacity < 0.5){
             price += (fillMultiplier-1)*basicPrice;
         }
         this.basicPrice = price;

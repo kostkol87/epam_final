@@ -1,7 +1,7 @@
 package Controllers;
 
 import DAObjects.Direction;
-import DAObjects.EntityCollections;
+import DAObjects.EntitiesUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/newOrder")
-public class OrderController extends HttpServlet {
+public class Order extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         proceesOrdering(req, resp);
@@ -25,15 +25,13 @@ public class OrderController extends HttpServlet {
     }
 
     protected void proceesOrdering(HttpServletRequest req, HttpServletResponse resp)  {
-        System.out.println("in new order");
         HttpSession session = req.getSession(true);
         int orderId = Integer.parseInt(req.getParameter("id"));
         Direction direction = new Direction();
-        List<Direction> directions = new EntityCollections().getDirections();
+        List<Direction> directions = new EntitiesUtils().getDirections();
         for (Direction direct : directions) {
             if (direct.getId() == orderId) {
                 try{
-                System.out.println("got it");
                 session.setAttribute("newOrder", direct);
                 req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
                 break;

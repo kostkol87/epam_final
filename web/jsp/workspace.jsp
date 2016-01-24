@@ -1,4 +1,3 @@
-<%@ page import="Utils.ConnectionPool.ConnectionPool" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -15,7 +14,7 @@
 <fmt:bundle basename="local">
 <h2>
     Hello, ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()}</h2>
-    <a href="/myOrders">My orders</a>
+    <a href="/jsp/showOrders.jsp">My orders</a>
 <br>
 Full list of available flights:
 

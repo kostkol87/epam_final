@@ -5,13 +5,23 @@
     <tlib-version>1.0</tlib-version>
     <short-name>mytag</short-name>
     <uri>/WEB-INF/tld/taglib.tld</uri>
-    <!--admin_page tags-->
     <tag>
         <name>directions</name>
         <tag-class>JSTL.DirectionsTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>page</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>orders</name>
+        <tag-class>JSTL.OrdersTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>userId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

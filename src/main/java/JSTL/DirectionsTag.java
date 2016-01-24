@@ -2,7 +2,7 @@ package JSTL;
 
 
 import DAObjects.Direction;
-import DAObjects.EntityCollections;
+import DAObjects.EntitiesUtils;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -17,12 +17,13 @@ public class DirectionsTag extends TagSupport {
 
 
     public void setPage(int page) {
+        System.out.println("Attribute OK in directions");
         this.page = page;
     }
 
     @Override
     public int doStartTag() throws JspException {
-        List<Direction> directions = new EntityCollections().getDirections();
+        List<Direction> directions = new EntitiesUtils().getDirections();
         int count = directions.size();
         tagView = new StringBuilder();
 
@@ -35,11 +36,13 @@ public class DirectionsTag extends TagSupport {
             tagView.append("<td> Departure Time </td>");
             tagView.append("<td> Destination Time </td>");
             tagView.append("<td> Price (€)</td>");
+            tagView.append("<td> Places left</td>");
             tagView.append("<td> Buy it!</td>");
             tagView.append("<tr>");
 
             tagView.append("</tr>");
             for (int i = (page-1)*25; i < ON_PAGE*page; i++) {
+                if (i == count) break;
                 tagView.append("<tr>");
 
                 tagView.append("<td>" + directions.get(i).getDeparture() + "</td>");
@@ -47,6 +50,7 @@ public class DirectionsTag extends TagSupport {
                 tagView.append("<td>" + directions.get(i).getDepTime() + "</td>");
                 tagView.append("<td>" + directions.get(i).getDestTime() + "</td>");
                 tagView.append("<td>" + directions.get(i).getBasicPrice() + "</td>");
+                tagView.append("<td>" + directions.get(i).getCapacity() + "/" +directions.get(i).getLeftPlaces() + "</td>");
                 tagView.append("<td> <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" + directions.get(i).getId() + "'\"</td>");
 //                tagView.append("<td>" + direction.getDeparture() + "</td>");
 

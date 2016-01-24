@@ -10,6 +10,7 @@
   summa is ${pageContext.session.getAttribute('summa')}. <br>
   <input type="submit" value="Pay!">
 </form>
+<button value="Save!" onclick="window.location = '/saveOrder'"></button>
 
 </body>
 </html>

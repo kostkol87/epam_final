@@ -1,7 +1,7 @@
 package Controllers;
 
 
-import DAObjects.Direction;
+import DAObjects.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,14 +36,26 @@ public class Payment extends HttpServlet{
     protected void processPayment(HttpServletRequest req, HttpServletResponse resp){
         //checkbox returns null or on
         HttpSession session = req.getSession(true);
-        Direction orerDirection = (Direction) session.getAttribute("newOrder");
-        int count = Integer.parseInt(req.getParameter("passengersCount"));
+
+        Direction orderDirection = (Direction) session.getAttribute("newOrder");
+        User thisUser = (User)session.getAttribute("user");
+        int count=0;
+        try{
+            count = Integer.parseInt(req.getParameter("passengersCount"));
+        }catch (NumberFormatException e){
+            req.setAttribute("capacityFail", true);
+            try {
+                req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
+            } catch (ServletException | IOException e1) {
+                e1.printStackTrace();
+            }
+        }
         boolean needBaggage = checkBox(req.getParameter("baggage"));
         boolean neenPriority = checkBox(req.getParameter("priotityQueue"));
 
         double summa = 0;
 
-        summa+=orerDirection.getBasicPrice();
+        summa+=orderDirection.getBasicPrice();
         if (needBaggage){
             summa+=45;
         }
@@ -53,7 +65,17 @@ public class Payment extends HttpServlet{
 
         summa = summa*count;
         session.setAttribute("summa", summa);
-
+        DAObjects.Order order = new EntitiesUtils().addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
+        if (order == null){
+            try {
+                req.setAttribute("capacityFail", true);
+                req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        req.setAttribute("capacityFail", false);
+        session.setAttribute("order", order);
         try {
             req.getRequestDispatcher("jsp/payment.jsp").forward(req, resp);
         } catch (ServletException | IOException e) {

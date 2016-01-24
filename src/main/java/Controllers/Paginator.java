@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAObjects.EntityCollections;
+import DAObjects.EntitiesUtils;
 import JSTL.DirectionsTag;
 
 import javax.servlet.ServletException;
@@ -30,8 +30,8 @@ public class Paginator extends HttpServlet {
             switch (moveTo) {
                 case "/page/r": {
                     int page = (int) session.getAttribute("page");
-                    int pagesCount = EntityCollections.directionsCount / DirectionsTag.ON_PAGE;
-                    boolean hasTail = (EntityCollections.directionsCount % DirectionsTag.ON_PAGE) != 0;
+                    int pagesCount = EntitiesUtils.directionsCount / DirectionsTag.ON_PAGE;
+                    boolean hasTail = (EntitiesUtils.directionsCount % DirectionsTag.ON_PAGE) != 0;
 
                     if (page <= pagesCount && hasTail) {
                         session.setAttribute("page", ++page);

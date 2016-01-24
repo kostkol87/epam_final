@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAObjects.EntityCollections;
+import DAObjects.EntitiesUtils;
 import DAObjects.User;
 
 import javax.servlet.ServletException;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/register")
-public class RegisterController extends HttpServlet {
+public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRegister(req, resp);
@@ -49,7 +49,7 @@ public class RegisterController extends HttpServlet {
             newUser.setPatronomic(patronomic);
 
 
-            if (!new EntityCollections().addUser(newUser)) {
+            if (!new EntitiesUtils().addUser(newUser)) {
                 req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
             } else {
                 session.setAttribute("user", newUser);
