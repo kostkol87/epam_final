@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EntitiesUtils {
@@ -28,7 +29,6 @@ public class EntitiesUtils {
                     "SELECT email, password, surname, name, patronomic, role FROM flight_discounter.user WHERE id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("result set is ready!");
             if (resultSet != null) {
                 while (resultSet.next()) {
                     user.setId(id);
@@ -59,7 +59,6 @@ public class EntitiesUtils {
                     "SELECT id, password, surname, name, patronomic, role FROM flight_discounter.user WHERE email=?");
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("result set is ready!");
             if (resultSet != null) {
                 while (resultSet.next()) {
                     user.setId(resultSet.getInt("id"));
@@ -116,7 +115,6 @@ public class EntitiesUtils {
             preparedStatement.setString(3, user.getSurname());
             preparedStatement.setString(4, user.getName());
             preparedStatement.setString(5, user.getPatronomic());
-            System.out.println(user);
             preparedStatement.executeUpdate();
             log.debug("SQLException in addOrder");
             preparedStatement.close();
@@ -131,10 +129,37 @@ public class EntitiesUtils {
         return true;
     }
 
-    static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static int directionsCount;
-
+    public static void addDirection(String departure, Date depTime, String destination, Date destTime,
+                        double basicPrice, double dateMultiplier, double fillMultiplier, int capacity){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO directions " +
+                            "(departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity, left_places) " +
+                            "VALUES (?,?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1, departure);
+            System.out.println(depTime);
+            preparedStatement.setDate(2, new java.sql.Date(depTime.getTime()));
+            preparedStatement.setString(3, destination);
+            System.out.println(destTime);
+            preparedStatement.setDate(4, new java.sql.Date(destTime.getTime()));
+            preparedStatement.setDouble(5, basicPrice);
+            preparedStatement.setDouble(6, dateMultiplier);
+            preparedStatement.setDouble(7, fillMultiplier);
+            preparedStatement.setInt(8, capacity);
+            preparedStatement.setInt(9, capacity);
+            preparedStatement.executeUpdate();
+            log.debug("new direction was added !!!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            pool.free(connection);
+        }
+    }
     public static Direction getDirection(int id) {
         Direction direction = new Direction();
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -387,14 +412,32 @@ public class EntitiesUtils {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE orders SET quantity=?, baggage=?, priority_queue=? WHERE  id=?"
-            );
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT direction FROM orders WHERE id=?");
+            preparedStatement.setInt(1, orderId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            int directionId = -1;
+            while (resultSet.next()){
+                directionId = resultSet.getInt("direction");
+            }
+            Direction direction = getDirection(directionId);
+            double currentPrice = direction.getBasicPrice();
+            if (needBaggage){
+                currentPrice += 45.0;
+            }
+            if (needPriority){
+                currentPrice += 30;
+            }
+            currentPrice = currentPrice*passangersCount;
+
+            preparedStatement = connection.prepareStatement("UPDATE orders SET quantity=?, baggage=?, priority_queue=?, summa=? WHERE  id=?");
             preparedStatement.setInt(1, passangersCount);
             preparedStatement.setBoolean(2, needBaggage);
             preparedStatement.setBoolean(3, needPriority);
-            preparedStatement.setInt(4, orderId);
+            preparedStatement.setDouble(4, currentPrice);
+            preparedStatement.setInt(5, orderId);
             preparedStatement.executeUpdate();
+            System.out.println("order was chnged!!!!");
         } catch (SQLException e) {
             log.warn("SQLException in changeOrder");
             e.printStackTrace();

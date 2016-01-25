@@ -2,6 +2,7 @@ package Controllers;
 
 
 import DAObjects.EntitiesUtils;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/changeOrder")
 public class ChangeOrder extends HttpServlet{
+    private static final Logger log = Logger.getLogger(ChangeOrder.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         procesChanging(req, resp);
@@ -32,7 +34,7 @@ public class ChangeOrder extends HttpServlet{
                 try {
                     EntitiesUtils.removeOrder(Integer.parseInt(removeId));
                 } catch (NumberFormatException e) {
-                    //needlog
+                    log.warn("NumberFormatException in changing...");
                     req.getRequestDispatcher("jsp/showOrders.jsp");
                 }
                 req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);

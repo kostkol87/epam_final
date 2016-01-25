@@ -25,6 +25,7 @@ public class Login extends HttpServlet{
 
     protected void processLogin(HttpServletRequest req, HttpServletResponse resp){
         HttpSession session = req.getSession(true);
+        session.setAttribute("expired", "onlogin");
         User sUser = (User) session.getAttribute("user");
         try{
             if (sUser != null) {

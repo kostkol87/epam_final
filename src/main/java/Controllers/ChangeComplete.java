@@ -30,7 +30,9 @@ public class ChangeComplete extends HttpServlet{
         int passCount = Integer.parseInt(req.getParameter("passengersCount"));
         boolean needBaggage = Boolean.parseBoolean(req.getParameter("baggage"));
         boolean needPriority = Boolean.parseBoolean(req.getParameter("priotityQueue"));
-        int changingOrderId = (int) session.getAttribute("changing");
+//        System.out.println(">>>>>>"+ session.getAttribute("changing") + "<<<<<<");
+        int changingOrderId = Integer.parseInt((String) session.getAttribute("changing"));
+
         EntitiesUtils.changeOrder(changingOrderId, passCount, needBaggage, needPriority);
         try {
             req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);

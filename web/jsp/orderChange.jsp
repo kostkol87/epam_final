@@ -11,15 +11,13 @@
 <h1>Change order:</h1>
 
 <b>attention, options you have choised will be accepted for all passangers!</b>
-<form action="/payment">
+<form action="/changeComplete">
   <table border="1">
 
     <tr>
       <td>
         Passangers count:
       </td>
-        <%--doesn't work =(--%>
-        ${pageContext.getAttribute("capacityFail") ? "not enough tikets" : " "}
       <td>
         <input type="text" name="passengersCount" required placeholder="Passangers count">
       </td>

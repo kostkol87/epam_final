@@ -22,7 +22,6 @@ public class OrdersTag extends TagSupport{
      * @param userId - witch orders will show
      */
     public void setUserId(int userId) {
-        System.out.println("Attribute OK in orders");
         this.userId = userId;
     }
 
@@ -30,7 +29,6 @@ public class OrdersTag extends TagSupport{
     public int doStartTag() throws JspException {
         tagView = new StringBuilder();
         List<Order> orders = EntitiesUtils.getOrders(userId);
-        System.out.println(orders.size() + " is a size");
         try{
             tagView.append("<table border=\"1\">"+
                             "<tr>"+
@@ -66,7 +64,6 @@ public class OrdersTag extends TagSupport{
                 tagView.append("</tr>");
             }
             pageContext.getOut().print(tagView);
-            System.out.println(tagView);
         } catch (IOException e) {
             e.printStackTrace();
         }

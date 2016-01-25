@@ -2,6 +2,7 @@ package Controllers;
 
 import DAObjects.EntitiesUtils;
 import DAObjects.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/logged")
 public class Verification extends HttpServlet {
+    private static final Logger log = Logger.getLogger(Verification.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processVerify(req, resp);
