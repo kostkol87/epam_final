@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/page/*")
+@WebServlet("/page")
 public class Paginator extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,42 +23,35 @@ public class Paginator extends HttpServlet {
         processPaginate(req, resp);
     }
 
-    protected void processPaginate(HttpServletRequest req, HttpServletResponse resp){
-        String moveTo = req.getRequestURI();
+    protected void processPaginate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String moveTo = req.getParameter("fwd");
+        String target = req.getParameter("target");
         HttpSession session = req.getSession(true);
-        try {
-            switch (moveTo) {
-                case "/page/r": {
-                    int page = (int) session.getAttribute("page");
-                    int pagesCount = EntitiesUtils.directionsCount / DirectionsTag.ON_PAGE;
-                    boolean hasTail = (EntitiesUtils.directionsCount % DirectionsTag.ON_PAGE) != 0;
+        switch (moveTo) {
+            case "r": {
+                int page = (int) session.getAttribute("page");
+                int pagesCount = EntitiesUtils.directionsCount / DirectionsTag.ON_PAGE;
+                boolean hasTail = (EntitiesUtils.directionsCount % DirectionsTag.ON_PAGE) != 0;
 
-                    if (page <= pagesCount && hasTail) {
-                        session.setAttribute("page", ++page);
-                        resp.sendRedirect(req.getHeader("Referer"));
+                if ((page <= pagesCount && hasTail) | (page < pagesCount && !hasTail)) {
+                    session.setAttribute("page", ++page);
+                    req.getRequestDispatcher(target).forward(req, resp);
 
-                    }else if (page < pagesCount && !hasTail) {
-                        session.setAttribute("page", ++page);
-                        resp.sendRedirect(req.getHeader("Referer"));
-
-                    }else {
-                        resp.sendRedirect(req.getHeader("Referer"));
-                    }
-                    break;
+                } else {
+                    req.getRequestDispatcher(target).forward(req, resp);
                 }
-                case "/page/l": {
-                    int page = (int) session.getAttribute("page");
-                    if (page>1) {
-                        session.setAttribute("page", --page);
-                        resp.sendRedirect(req.getHeader("Referer"));
-                    }else {
-                        resp.sendRedirect(req.getHeader("Referer"));
-                    }
-                    break;
-                }
+                break;
             }
-        }catch (IOException e){
-            throw new RuntimeException(e);
+            case "l": {
+                int page = (int) session.getAttribute("page");
+                if (page > 1) {
+                    session.setAttribute("page", --page);
+                    req.getRequestDispatcher(target).forward(req, resp);
+                } else {
+                    req.getRequestDispatcher(target).forward(req, resp);
+                }
+                break;
+            }
         }
 
     }

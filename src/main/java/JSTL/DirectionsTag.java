@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- *Custom JSTL tag, generates html table filled by all available directions
+ * Custom JSTL tag, generates html table filled by all available directions
  */
 public class DirectionsTag extends TagSupport {
     private static final Logger log = Logger.getLogger(DirectionsTag.class);
@@ -21,6 +21,7 @@ public class DirectionsTag extends TagSupport {
 
     /**
      * this is required tag
+     *
      * @param page - current page (used by paginator)
      */
     public void setPage(int page) {
@@ -39,38 +40,41 @@ public class DirectionsTag extends TagSupport {
         String rmTitle = "";
         String rmButton1 = "";
         String rmButton2 = "";
-        if(admin == 3){
+        if (admin == 3) {
             rmTitle = "<td>RM</td>";
             rmButton1 = "<td><button onclick=\"accept(";
-            rmButton2 =                                     ")\"> - </button></td></tr>";
+            rmButton2 = ")\"> - </button></td></tr>";
         }
         try {
 
-            tagView.append("<table border=\"1\">"+
-                            "<tr>"+
-                            "<td> Departure </td>"+
-                            "<td> Destination </td>"+
-                            "<td> Departure Time </td>"+
-                            "<td> Destination Time </td>"+
-                            "<td> Price (€)</td>"+
-                            "<td> Places left</td>"+
-                            "<td> Buy it!</td>"+ rmTitle+
-                            "<tr>");
+            tagView.append("<table border=\"1\">" +
+                    "<tr>" +
+                    "<td> Departure </td>" +
+                    "<td> Destination </td>" +
+                    "<td> Departure Time </td>" +
+                    "<td> Destination Time </td>" +
+                    "<td> Price (€)</td>" +
+                    "<td> Places left</td>" +
+                    "<td> Buy it!</td>" + rmTitle +
+                    "<tr>");
 
             tagView.append("</tr>");
             for (int i = (page - 1) * 25; i < ON_PAGE * page; i++) {
                 if (i == count) break;
-                tagView.append("<tr>"+
-                                "<td>" + directions.get(i).getDeparture() + "</td>"+
-                                "<td>" + directions.get(i).getDestination() + "</td>"+
-                                "<td>" + directions.get(i).getDepTime() + "</td>"+
-                                "<td>" + directions.get(i).getDestTime() + "</td>"+
-                                "<td>" + directions.get(i).getBasicPrice() + "</td>"+
-                                "<td>" + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + "</td>"+
-                                "<td> <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" +
-                                    directions.get(i).getId() + "'\"</td>");
-                if (admin == 3){
-                    tagView.append(rmButton1  + i + rmButton2);
+                if (directions.get(i) == null) {
+                    continue;
+                }
+                tagView.append("<tr>" +
+                        "<td>" + directions.get(i).getDeparture() + "</td>" +
+                        "<td>" + directions.get(i).getDestination() + "</td>" +
+                        "<td>" + directions.get(i).getDepTime() + "</td>" +
+                        "<td>" + directions.get(i).getDestTime() + "</td>" +
+                        "<td>" + directions.get(i).getBasicPrice() + "</td>" +
+                        "<td>" + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + "</td>" +
+                        "<td> <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" +
+                        directions.get(i).getId() + "'\"</td>");
+                if (admin == 3) {
+                    tagView.append(rmButton1 + i + rmButton2);
                 }
 
             }
@@ -81,6 +85,6 @@ public class DirectionsTag extends TagSupport {
             e.printStackTrace();
 
         }
-            return SKIP_BODY;
+        return SKIP_BODY;
     }
 }

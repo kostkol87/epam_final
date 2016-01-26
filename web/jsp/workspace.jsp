@@ -75,7 +75,7 @@
 
 <zz:directions admin="${pageContext.session.getAttribute('user').getRole()}" page="${pageContext.session.getAttribute('page')}"/><br>
 
-    <a href="/page/l"> << </a> ...${pageContext.session.getAttribute('page')}... <a href="/page/r"> >> </a><br>
+    <a href="/page?fwd=l&target=jsp/workspace.jsp"> << </a> ...${pageContext.session.getAttribute('page')}... <a href="/page?fwd=r&target=jsp/workspace.jsp"> >> </a><br>
     <a href="/logout"><fmt:message key="LogOut"/></a><br>
     <a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
 </fmt:bundle>

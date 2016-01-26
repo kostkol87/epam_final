@@ -133,7 +133,7 @@ public class EntitiesUtils {
 
     public static int directionsCount;
     public static void addDirection(String departure, Date depTime, String destination, Date destTime,
-                        double basicPrice, double dateMultiplier, double fillMultiplier, int capacity){
+                                    double basicPrice, double dateMultiplier, double fillMultiplier, int capacity){
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try{
@@ -161,44 +161,53 @@ public class EntitiesUtils {
         }
     }
     public static Direction getDirection(int id) {
-        Direction direction = new Direction();
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("" +
-                    "SELECT departure, dep_date, destination, dest_date," +
-                    " basic_price, date_multiplier, fill_multiplier, " +
-                    "capacity, left_places FROM directions WHERE id=?");
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                direction.setId(id);
-                direction.setDeparture(resultSet.getString("departure"));
-                direction.setDepTime(SDF.parse(resultSet.getString("dep_date")));
-                direction.setDestination(resultSet.getString("destination"));
-                direction.setDestTime(SDF.parse(resultSet.getString("dest_date")));
-                direction.setDateMultiplier(resultSet.getDouble("date_multiplier"));
-                direction.setFillMultiplier(resultSet.getDouble("fill_multiplier"));
-                direction.setCapacity(resultSet.getInt("capacity"));
-                direction.setLeftPlaces(resultSet.getInt("left_places"));
-                direction.setBasicPrice(resultSet.getDouble("basic_price"));
+//        Direction direction = new Direction();
+//        ConnectionPool pool = ConnectionPool.getInstance();
+//        Connection connection = pool.getConnection();
+//        try {
+//            PreparedStatement preparedStatement = connection.prepareStatement("" +
+//                    "SELECT departure, dep_date, destination, dest_date," +
+//                    " basic_price, date_multiplier, fill_multiplier, " +
+//                    "capacity, left_places FROM directions WHERE id=?");
+//            preparedStatement.setInt(1, id);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                direction.setId(id);
+//                direction.setDeparture(resultSet.getString("departure"));
+//                direction.setDepTime(SDF.parse(resultSet.getString("dep_date")));
+//                direction.setDestination(resultSet.getString("destination"));
+//                direction.setDestTime(SDF.parse(resultSet.getString("dest_date")));
+//                direction.setDateMultiplier(resultSet.getDouble("date_multiplier"));
+//                direction.setFillMultiplier(resultSet.getDouble("fill_multiplier"));
+//                direction.setCapacity(resultSet.getInt("capacity"));
+//                direction.setLeftPlaces(resultSet.getInt("left_places"));
+//                direction.setBasicPrice(resultSet.getDouble("basic_price"));
+//            }
+//
+//        } catch (SQLException e) {
+//            log.warn("SQLException in getDirection(id)");
+//            e.printStackTrace();
+//        } catch (ParseException e) {
+//            log.warn("ParseException in getDirection(id)");
+//            e.printStackTrace();
+//        } finally {
+//            pool.free(connection);
+//        }
+        Direction result = null;
+        if (directions == null){
+            getDirections();
+        }
+        for (Direction direction:directions){
+            if (direction.getId() == id){
+                result = direction;
             }
 
-        } catch (SQLException e) {
-            log.warn("SQLException in getDirection(id)");
-            e.printStackTrace();
-        } catch (ParseException e) {
-            log.warn("ParseException in getDirection(id)");
-            e.printStackTrace();
-        } finally {
-            pool.free(connection);
         }
-
-        return direction;
+        return result;
     }
 
     public static List<Direction> getDirections() {
-        List<Direction> directions = new ArrayList<>();
+        directions = new ArrayList<>();
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         try {
@@ -210,9 +219,6 @@ public class EntitiesUtils {
             ResultSet resultSet = preparedStatement.executeQuery();
             Direction newDirection;
             while (resultSet.next()) {
-                if (resultSet.getInt("left_places") < 1) {
-                    continue;
-                }
                 newDirection = new Direction();
                 newDirection.setId(resultSet.getInt("id"));
                 newDirection.setDeparture(resultSet.getString("departure"));
@@ -238,6 +244,22 @@ public class EntitiesUtils {
         directionsCount = directions.size();
 
         return directions;
+    }
+
+    public static boolean isEmptyDirection(int id){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        boolean result = false;
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM orders WHERE direction=? AND paid=1");
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            result = !resultSet.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public static Order addOrder(Direction direction, User user, int quantity, boolean baggage, boolean priority, double summa) {

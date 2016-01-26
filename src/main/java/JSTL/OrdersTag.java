@@ -44,6 +44,7 @@ public class OrdersTag extends TagSupport{
                             "<tr>"+
                             "</tr>");
             for (Order order: orders){
+                System.out.println(order);
                 tagView.append("<tr>"+
                                 "<td>" + order.getDirection().getDeparture() + "</td>"+
                                 "<td>" + order.getDirection().getDestination() + "</td>"+
