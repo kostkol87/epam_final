@@ -9,7 +9,7 @@
     <script>
         function accept(id) {
             var x;
-            if (confirm("Are you sure want to delete this direction") == true) {
+            if (confirm("Are you sure want to delete this direction id=" + id + "?") == true) {
                 x = "You pressed OK!";
                 window.location = '/removeDirection?id='+id;
             } else {

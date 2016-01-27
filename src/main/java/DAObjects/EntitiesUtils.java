@@ -142,10 +142,8 @@ public class EntitiesUtils {
                             "(departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity, left_places) " +
                             "VALUES (?,?,?,?,?,?,?,?,?)");
             preparedStatement.setString(1, departure);
-            System.out.println(depTime);
             preparedStatement.setDate(2, new java.sql.Date(depTime.getTime()));
             preparedStatement.setString(3, destination);
-            System.out.println(destTime);
             preparedStatement.setDate(4, new java.sql.Date(destTime.getTime()));
             preparedStatement.setDouble(5, basicPrice);
             preparedStatement.setDouble(6, dateMultiplier);
@@ -258,8 +256,28 @@ public class EntitiesUtils {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            pool.free(connection);
         }
+
         return result;
+    }
+
+    public static void removeDirection(int id){
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE directions, orders  FROM directions  INNER JOIN orders\n" +
+                    "WHERE directions.id = orders.direction and directions.id=?;");
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            pool.free(connection);
+        }
+        log.debug("direction with id=" + id + "was deleted!");
     }
 
     public static Order addOrder(Direction direction, User user, int quantity, boolean baggage, boolean priority, double summa) {
@@ -459,7 +477,6 @@ public class EntitiesUtils {
             preparedStatement.setDouble(4, currentPrice);
             preparedStatement.setInt(5, orderId);
             preparedStatement.executeUpdate();
-            System.out.println("order was chnged!!!!");
         } catch (SQLException e) {
             log.warn("SQLException in changeOrder");
             e.printStackTrace();

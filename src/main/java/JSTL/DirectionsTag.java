@@ -41,9 +41,9 @@ public class DirectionsTag extends TagSupport {
         String rmButton1 = "";
         String rmButton2 = "";
         if (admin == 3) {
-            rmTitle = "<td>RM</td>";
+            rmTitle = "<td> Remove </td>";
             rmButton1 = "<td><button onclick=\"accept(";
-            rmButton2 = ")\"> - </button></td></tr>";
+            rmButton2 = ")\"> remove </button></td></tr>";
         }
         try {
 
@@ -53,9 +53,9 @@ public class DirectionsTag extends TagSupport {
                     "<td> Destination </td>" +
                     "<td> Departure Time </td>" +
                     "<td> Destination Time </td>" +
-                    "<td> Price (€)</td>" +
-                    "<td> Places left</td>" +
-                    "<td> Buy it!</td>" + rmTitle +
+                    "<td> Price (€) </td>" +
+                    "<td> Places left </td>" +
+                    "<td> Buy it! </td>" + rmTitle +
                     "<tr>");
 
             tagView.append("</tr>");
@@ -65,16 +65,16 @@ public class DirectionsTag extends TagSupport {
                     continue;
                 }
                 tagView.append("<tr>" +
-                        "<td>" + directions.get(i).getDeparture() + "</td>" +
-                        "<td>" + directions.get(i).getDestination() + "</td>" +
-                        "<td>" + directions.get(i).getDepTime() + "</td>" +
-                        "<td>" + directions.get(i).getDestTime() + "</td>" +
-                        "<td>" + directions.get(i).getBasicPrice() + "</td>" +
-                        "<td>" + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + "</td>" +
-                        "<td> <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" +
-                        directions.get(i).getId() + "'\"</td>");
+                        "<td> " + directions.get(i).getDeparture() + " </td>" +
+                        "<td> " + directions.get(i).getDestination() + " </td>" +
+                        "<td> " + directions.get(i).getDepTime() + " </td>" +
+                        "<td> " + directions.get(i).getDestTime() + " </td>" +
+                        "<td> " + directions.get(i).getBasicPrice() + " </td>" +
+                        "<td> " + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + " </td>" +
+                        "<td>  <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" +
+                        directions.get(i).getId() + "'\" </td>");
                 if (admin == 3) {
-                    tagView.append(rmButton1 + i + rmButton2);
+                    tagView.append(rmButton1 + directions.get(i).getId() + rmButton2);
                 }
 
             }
