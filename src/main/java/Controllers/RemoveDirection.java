@@ -35,9 +35,9 @@ public class RemoveDirection extends HttpServlet{
                 resp.getWriter().print("Direction was removed successfully!\n you'll be redirect in 10 sec.");
                 resp.setHeader("Refresh", redirection);
             } else {
-                resp.getWriter().print("There are passengers who have already bought tickets!\n" +
-                        " you'll be redirect in 10 sec." +
-                        "May be we're low-cost, but we're too honest =)");
+                resp.getWriter().print("There are passengers who have already bought tickets!" +
+                        "May be we're low-cost, but we're too honest =)"+
+                        "\n you'll be redirect in 10 sec.");
                 resp.setHeader("Refresh", redirection);
             }
         }
