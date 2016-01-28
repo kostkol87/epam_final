@@ -1,6 +1,6 @@
 package Controllers;
 
-import DAObjects.User;
+import DAO.Entities.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class Login extends HttpServlet{
+public class Login extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,19 +23,15 @@ public class Login extends HttpServlet{
         processLogin(req, resp);
     }
 
-    protected void processLogin(HttpServletRequest req, HttpServletResponse resp){
+    protected void processLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         session.setAttribute("expired", "onlogin");
         User sUser = (User) session.getAttribute("user");
-        try{
-            if (sUser != null) {
-                session.setAttribute("page", 1);
-                req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
-            } else {
-                req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
-            }
-        } catch (ServletException | IOException e) {
-            throw new RuntimeException(e);
+        if (sUser != null) {
+            session.setAttribute("page", 1);
+            req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
+        } else {
+            req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
         }
     }
 }

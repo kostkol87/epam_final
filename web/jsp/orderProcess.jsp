@@ -5,17 +5,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
 <fmt:bundle basename="local">
-    <title>new order</title>
+    <title><fmt:message key="newOrder"/> </title>
 </head>
 <body>
 
-<h2>Customize you order:</h2>
-<b>attention, options you have choised will be accepted for all passangers!</b>
+<h2><fmt:message key="Customize"/> :</h2>
+<b><fmt:message key="attention"/> </b>
 <form action="/payment">
     <table border="1">
         <tr>
             <td>
-                Departure:
+                <fmt:message key="Departure"/>
             </td>
             <td>
                 ${pageContext.session.getAttribute("newOrder").getDeparture()}
@@ -24,7 +24,7 @@
 
         <tr>
             <td>
-                Destination:
+                <fmt:message key="Destination"/>:
             </td>
             <td>
                 ${pageContext.session.getAttribute("newOrder").getDestination()}
@@ -34,7 +34,7 @@
 
         <tr>
             <td>
-                Departure time and date:
+                <fmt:message key="DepTime"/>:
             </td>
             <td>
                 ${pageContext.session.getAttribute("newOrder").getDepTime()}
@@ -43,7 +43,7 @@
 
         <tr>
             <td>
-                Destination time and date:
+                <fmt:message key="DestTime"/>:
             </td>
             <td>
                 ${pageContext.session.getAttribute("newOrder").getDestTime()}
@@ -53,7 +53,7 @@
 
         <tr>
             <td>
-                Basic price (€):
+                <fmt:message key="Price"/>:
             </td>
             <td>
                 ${pageContext.session.getAttribute("newOrder").getBasicPrice()}
@@ -63,10 +63,10 @@
 
         <tr>
             <td>
-                Passangers count:
+                <fmt:message key="PassCount"/>:
             </td>
             <%--doesn't work =(--%>
-            ${pageContext.getAttribute("capacityFail") ? "not enough tikets" : " "}
+            <%--${pageContext.getAttribute("capacityFail") ? "not enough tikets" : " "}--%>
             <td>
                 <input type="text" name="passengersCount" required placeholder="Passangers count">
             </td>
@@ -74,7 +74,7 @@
 
         <tr>
             <td>
-                Need baggage(+45€):
+                <fmt:message key="NeedBaggage"/>
             </td>
             <td>
                 <input type="checkbox" name="baggage">
@@ -83,7 +83,7 @@
 
         <tr>
             <td>
-                Need priority queue(+30€):
+                <fmt:message key="NeedPriority"/>(+30€):
             </td>
             <td>
                 <input type="checkbox" name="priotityQueue">
@@ -92,12 +92,12 @@
     </table>
     <br>
 
-    confirm and go to the payment: <br>
-    <input type="submit" value="Confirm">
+    <fmt:message key="confirtToPay"/> : <br>
+    <input type="submit" value="<fmt:message key='Confirm'/> ">
     <input type="button" value="<fmt:message key="Home"/> " onclick="window.location = '/jsp/workspace.jsp'">
 </form>
 <br>
-<a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
+<a href="/locale?loc=ru_RU&target=${pageContext.request.servletPath}">ru</a> | <a href="/locale?loc=en_US&target=${pageContext.request.servletPath}">en</a>
 </fmt:bundle>
 </body>
 </html>

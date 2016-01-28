@@ -5,67 +5,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/utils.js"></script>
 
-    <script>
-        function accept(id) {
-            var x;
-            if (confirm("Are you sure want to delete this direction id=" + id + "?") == true) {
-                x = "You pressed OK!";
-                window.location = '/removeDirection?id='+id;
-            } else {
-                return;
-            }
-        }
-    </script>
-
-    <script>
-        document.getElementById('datetimeLocalToday').value = new Date().toJSON().slice(0, 19);
-    </script>
-    <script>
-        document.getElementById('datetimeLocalToday').value = new Date().toJSON().slice(0, 19);
-    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
 
-    <title>Workspace</title>
+    <title><fmt:message key="Workspace"/> </title>
 </head>
 <body>
 <fmt:bundle basename="local">
     <h2>
-        Hello, ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()}</h2>
+        <fmt:message key="Hello"/> , ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()}</h2>
 
-    <a href="/jsp/showOrders.jsp">My orders</a><br>
-    Full list of available flights:
-    <h3>Directions list:</h3>
+    <a href="/jsp/showOrders.jsp"><fmt:message key="MyOrders"/> </a><br>
+    <h3><fmt:message key="DList"/> </h3>
     <c:set var="role" scope="session" value="${pageContext.session.getAttribute('user').getRole()}"/>
     <c:if test="${role == 3}">
         <form action="/addDirection" method="post">
             <table border="1">
                 <tr>
-                    <td><b> It looks like you're admin!</b></td>
-                    <br>
+                    <td><b> <fmt:message key="youAdmin"/> </b></td>
                 <tr>
                 <tr>
-                    <td> Departure</td>
-                    <td> Departure Time</td>
-                    <td> Destination</td>
-                    <td> Destination Time</td>
-                    <td> Basic Price (€)</td>
-                    <td> Date multiplier</td>
-                    <td> Fill multiplier</td>
-                    <td> Capacity</td>
+                    <td> <fmt:message key="Departure"/> </td>
+                    <td> <fmt:message key="DepTime"/> </td>
+                    <td> <fmt:message key="Destination"/> </td>
+                    <td> <fmt:message key="DestTime"/> </td>
+                    <td> <fmt:message key="Price"/> </td>
+                    <td> <fmt:message key="DMult"/> </td>
+                    <td> <fmt:message key="FMult"/> </td>
+                    <td> <fmt:message key="Capacity"/> </td>
                 <tr>
 
                 <tr>
-                    <td><input type="text" name="fieldDeparture" required placeholder="City departure"></td>
-                    <td><input type="datetime-local" name="depTime" required id="datetimeLocalToday1"></td>
-                    <td><input type="text" name="fieldDestination" required placeholder="City destination"></td>
-                    <td><input type="datetime-local" name="destTime" required id="datetimeLocalToday2"></td>
-                    <td><input type="text" name="basicPrice" required placeholder="basic price (€)"></td>
-                    <td><input type="text"  name="dateMult" required placeholder="date multiplier"></td>
-                    <td><input type="text"  name="fillMult" required placeholder="fill multiplier"></td>
-                    <td><input type="text" name="capacity" required placeholder="capacity"></td>
-                    <td><input type="submit" value="add"></td>
+                    <td><input type="text" name="fieldDeparture" required placeholder="<fmt:message key="Departure"/>"></td>
+                    <td><input type="datetime-local" name="depTime" required></td>
+                    <td><input type="text" name="fieldDestination" required placeholder="<fmt:message key="Destination"/>"></td>
+                    <td><input type="datetime-local" name="destTime" required></td>
+                    <td><input type="text" name="basicPrice" required placeholder="<fmt:message key="Price"/>"></td>
+                    <td><input type="text"  name="dateMult" required placeholder="<fmt:message key="DMult"/>"></td>
+                    <td><input type="text"  name="fillMult" required placeholder="<fmt:message key="FMult"/>"></td>
+                    <td><input type="text" name="capacity" required placeholder="<fmt:message key="Capacity"/>"></td>
+                    <td><input type="submit" value="<fmt:message key="Add"/>"></td>
                 <tr>
             </table>
         </form>
@@ -73,11 +54,12 @@
     </c:if>
 
 
-<zz:directions admin="${pageContext.session.getAttribute('user').getRole()}" page="${pageContext.session.getAttribute('page')}"/><br>
+<zz:directions admin="${pageContext.session.getAttribute('user').getRole()}" page="${pageContext.session.getAttribute('page')}" locale="${pageContext.session.getAttribute('locale')}"/><br>
 
-    <a href="/page?fwd=l&target=jsp/workspace.jsp"> << </a> ...${pageContext.session.getAttribute('page')}... <a href="/page?fwd=r&target=jsp/workspace.jsp"> >> </a><br>
-    <a href="/logout"><fmt:message key="LogOut"/></a><br>
-    <a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
+    <a href="/page?fwd=l&target=${pageContext.request.servletPath}"> << </a> ...${pageContext.session.getAttribute('page')}... <a href="/page?fwd=r&target=${pageContext.request.servletPath}"> >> </a><br>
+    <a href="/logout"><fmt:message key="LogOut"/></a><br><br>
+    <a href="/locale?loc=ru_RU&target=${pageContext.request.servletPath}">ru</a> | <a href="/locale?loc=en_US&target=${pageContext.request.servletPath}">en</a>
+
 </fmt:bundle>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package Controllers;
 
-import DAObjects.Direction;
-import DAObjects.EntitiesUtils;
+import DAO.Entities.Direction;
+import DAO.Utils.Directions;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,20 +24,15 @@ public class Order extends HttpServlet {
         proceesOrdering(req, resp);
     }
 
-    protected void proceesOrdering(HttpServletRequest req, HttpServletResponse resp)  {
+    protected void proceesOrdering(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         int orderId = Integer.parseInt(req.getParameter("id"));
-//        Direction direction = new Direction();
-        List<Direction> directions =  EntitiesUtils.getDirections();
+        List<Direction> directions =  Directions.getDirections();
         for (Direction direct : directions) {
             if (direct.getId() == orderId) {
-                try{
                 session.setAttribute("newOrder", direct);
                 req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
                 break;
-                } catch (IOException | ServletException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }

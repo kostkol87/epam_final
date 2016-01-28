@@ -1,7 +1,7 @@
 package Controllers;
 
 
-import DAObjects.EntitiesUtils;
+import DAO.Utils.Directions;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,10 +42,10 @@ public class AddDirection extends HttpServlet {
             capacity = Integer.parseInt(req.getParameter("capacity"));
 
             String strDepTime = (req.getParameter("depTime").replace("T", " ") + ":00");
-            depTime = EntitiesUtils.SDF.parse(strDepTime);
+            depTime = Directions.SDF.parse(strDepTime);
 
-            String strDespTime = (req.getParameter("destTime").replace("T", " ")+":00");
-            destTime = EntitiesUtils.SDF.parse(strDespTime);
+            String strDespTime = (req.getParameter("destTime").replace("T", " ") + ":00");
+            destTime = Directions.SDF.parse(strDespTime);
 
             basicPrice = Double.parseDouble(req.getParameter("basicPrice"));
             dateMult = Double.parseDouble(req.getParameter("dateMult"));
@@ -56,7 +56,7 @@ public class AddDirection extends HttpServlet {
             e.printStackTrace();
         }
 
-        EntitiesUtils.addDirection(fieldDeparture, depTime, fieldDestination, destTime, basicPrice, dateMult, fillMult, capacity);
+        Directions.addDirection(fieldDeparture, depTime, fieldDestination, destTime, basicPrice, dateMult, fillMult, capacity);
         req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
     }
 }

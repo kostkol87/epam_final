@@ -11,13 +11,12 @@
 </head>
 
 <body>
-
 <h1><fmt:message key="WelcomeStr"/> </h1><br>
 <h2>
     <fmt:message key="MakeChoice"/><br>
     <b><a href="/login"><fmt:message key="LogIn"/> </a> | <a href="/jsp/register.jsp"><fmt:message key="Registration"/> </a></b>
 </h2>
-<a href="/locale/ru_RU">ru</a> | <a href="/locale/en_US">en</a>
+<a href="/locale?loc=ru_RU&target=${pageContext.request.servletPath}">ru</a> | <a href="/locale?loc=en_US&target=${pageContext.request.servletPath}">en</a>
 </fmt:bundle>
 </body>
 </html>

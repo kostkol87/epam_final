@@ -1,4 +1,4 @@
-package DAObjects;
+package DAO.Entities;
 
 /**
  * order entity

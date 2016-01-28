@@ -1,7 +1,7 @@
 package Controllers;
 
 
-import DAObjects.EntitiesUtils;
+import DAO.Utils.Orders;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -13,8 +13,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/changeOrder")
-public class ChangeOrder extends HttpServlet{
+public class ChangeOrder extends HttpServlet {
     private static final Logger log = Logger.getLogger(ChangeOrder.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         procesChanging(req, resp);
@@ -25,25 +26,24 @@ public class ChangeOrder extends HttpServlet{
         procesChanging(req, resp);
     }
 
-    protected void procesChanging(HttpServletRequest req, HttpServletResponse resp){
+    protected void procesChanging(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+
         String id = req.getParameter("id");
         String removeId = req.getParameter("removeId");
-        try {
-            if (removeId != null) {
-                try {
-                    EntitiesUtils.removeOrder(Integer.parseInt(removeId));
-                } catch (NumberFormatException e) {
-                    log.warn("NumberFormatException in changing...");
-                    req.getRequestDispatcher("jsp/showOrders.jsp");
-                }
-                req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
-            } else if (id != null) {
-                session.setAttribute("changing", id);
-                req.getRequestDispatcher("jsp/orderChange.jsp").forward(req, resp);
+
+        if (removeId != null) {
+            try {
+                Orders.removeOrder(Integer.parseInt(removeId));
+            } catch (NumberFormatException e) {
+                log.warn("NumberFormatException in changing...");
+                req.getRequestDispatcher("jsp/showOrders.jsp");
             }
-        }catch (ServletException | IOException e) {
-            e.printStackTrace();
+            req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
+
+        } else if (id != null) {
+            session.setAttribute("changing", id);
+            req.getRequestDispatcher("jsp/orderChange.jsp").forward(req, resp);
         }
     }
 }

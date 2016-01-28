@@ -1,7 +1,7 @@
 package Controllers;
 
-import DAObjects.EntitiesUtils;
-import DAObjects.User;
+import DAO.Entities.User;
+import DAO.Utils.Users;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,45 +24,45 @@ public class Register extends HttpServlet {
     }
 
     /**
-     * getting all atributes from register.jsp and createst new {@link DAObjects.User}
+     * getting all atributes from register.jsp and createst new {@link DAO.Entities.User}
+     *
      * @param req
      * @param resp
      */
-    protected void processRegister(HttpServletRequest req, HttpServletResponse resp) {
+    protected void processRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         User newUser = new User();
-        try {
-            String eMail = req.getParameter("loginField");
-            if (eMail == null && session.getAttribute("user")==null) {
-                session.setAttribute("page", 1);
-                req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
-                return;
-            }else if (session.getAttribute("user")!=null){
-                session.setAttribute("page", 1);
-                req.getRequestDispatcher("jsp/workspace.jsp").forward(req,resp);
-                return;
-            }
-            String password = req.getParameter("passField");
-            String surname = req.getParameter("sNameField");
-            String name = req.getParameter("nameField");
-            String patronomic = req.getParameter("patronomicField");
+        String eMail = req.getParameter("loginField");
 
-            newUser.setEmail(eMail);
-            newUser.setPassword(password);
-            newUser.setSurname(surname);
-            newUser.setName(name);
-            newUser.setPatronomic(patronomic);
+        if (eMail == null && session.getAttribute("user") == null) {
+            session.setAttribute("page", 1);
+            req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
+            return;
+
+        } else if (session.getAttribute("user") != null) {
+            session.setAttribute("page", 1);
+            req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
+            return;
+        }
+
+        String password = req.getParameter("passField");
+        String surname = req.getParameter("sNameField");
+        String name = req.getParameter("nameField");
+        String patronomic = req.getParameter("patronomicField");
+
+        newUser.setEmail(eMail);
+        newUser.setPassword(password);
+        newUser.setSurname(surname);
+        newUser.setName(name);
+        newUser.setPatronomic(patronomic);
 
 
-            if (!EntitiesUtils.addUser(newUser)) {
-                req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
-            } else {
-                session.setAttribute("user", newUser);
-                session.setAttribute("page", 1);
-                req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
-            }
-        } catch (ServletException | IOException e) {
-            throw new RuntimeException(e);
+        if (!Users.addUser(newUser)) {
+            req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
+        } else {
+            session.setAttribute("user", newUser);
+            session.setAttribute("page", 1);
+            req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
         }
     }
 }

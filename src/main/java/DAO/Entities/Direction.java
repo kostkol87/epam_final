@@ -1,4 +1,4 @@
-package DAObjects;
+package DAO.Entities;
 
 import java.util.Date;
 

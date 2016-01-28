@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/logout")
-public class Logout extends HttpServlet{
+public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processLogout(req, resp);
@@ -20,13 +20,9 @@ public class Logout extends HttpServlet{
         processLogout(req, resp);
     }
 
-    protected void processLogout(HttpServletRequest req, HttpServletResponse resp){
+    protected void processLogout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         session.invalidate();
-        try {
-            req.getRequestDispatcher("jsp/welcome.jsp").forward(req, resp);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
+        req.getRequestDispatcher("jsp/welcome.jsp").forward(req, resp);
     }
 }

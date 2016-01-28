@@ -14,7 +14,9 @@ import java.util.Properties;
 public class ConnectionPool {
 
     private static final Logger log = Logger.getLogger(ConnectionPool.class);
-    public static final String PROPERTIES_PATH = "C:\\epam_final\\src\\main\\resources\\pool.properties";
+//    public static final String PROPERTIES_PATH = "C:\\epam_final\\src\\main\\resources\\pool.properties";
+//    public static final String PROPERTIES_PATH = "pool.properties";
+    public static final String PROPERTIES_PATH = "/usr/local/apache-tomcat-9.0.0.M1/webapps/ROOT/WEB-INF/classes/pool.properties";
     private static ConnectionPool INSTANCE;
     private HashMap<Connection, Boolean> thePool;
 

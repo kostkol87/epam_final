@@ -19,6 +19,11 @@
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 
     <tag>
@@ -27,6 +32,11 @@
         <body-content>empty</body-content>
         <attribute>
             <name>userId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>locale</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

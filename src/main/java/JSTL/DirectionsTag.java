@@ -1,13 +1,15 @@
 package JSTL;
 
-import DAObjects.Direction;
-import DAObjects.EntitiesUtils;
+import DAO.Entities.Direction;
+import DAO.Utils.Directions;
 import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Custom JSTL tag, generates html table filled by all available directions
@@ -18,6 +20,9 @@ public class DirectionsTag extends TagSupport {
     private int admin;
     private int page;
     private StringBuilder tagView;
+    private String locale;
+    private ResourceBundle localedDict;
+
 
     /**
      * this is required tag
@@ -32,30 +37,41 @@ public class DirectionsTag extends TagSupport {
         this.admin = isAdmin;
     }
 
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
     @Override
     public int doStartTag() throws JspException {
-        List<Direction> directions = EntitiesUtils.getDirections();
+        List<Direction> directions = Directions.getDirections();
+        if (locale == "" || locale == null) {
+            this.setLocale("ru_RU");
+        }
+        String[] sLocale = locale.split("_");
+        Locale myLocale = new Locale(sLocale[0], sLocale[1]);
         int count = directions.size();
         tagView = new StringBuilder();
         String rmTitle = "";
         String rmButton1 = "";
         String rmButton2 = "";
+        localedDict = ResourceBundle.getBundle("local", myLocale);
+
         if (admin == 3) {
-            rmTitle = "<td> Remove </td>";
+            rmTitle = "<td> " + localedDict.getString("Remove") + "  </td>";
             rmButton1 = "<td><button onclick=\"accept(";
-            rmButton2 = ")\"> remove </button></td></tr>";
+            rmButton2 = ")\"> " + localedDict.getString("Remove") + " </button></td></tr>";
         }
         try {
 
             tagView.append("<table border=\"1\">" +
                     "<tr>" +
-                    "<td> Departure </td>" +
-                    "<td> Destination </td>" +
-                    "<td> Departure Time </td>" +
-                    "<td> Destination Time </td>" +
-                    "<td> Price (€) </td>" +
-                    "<td> Places left </td>" +
-                    "<td> Buy it! </td>" + rmTitle +
+                    "<td>" + localedDict.getString("Departure") + "</td>" +
+                    "<td> " + localedDict.getString("Destination") + " </td>" +
+                    "<td> " + localedDict.getString("DepTime") + " </td>" +
+                    "<td> " + localedDict.getString("DestTime") + " </td>" +
+                    "<td> " + localedDict.getString("Price") + " </td>" +
+                    "<td> " + localedDict.getString("Capacity") + " /<br> " + localedDict.getString("placesLeft") + " </td>" +
+                    "<td> " + localedDict.getString("Buy") + " </td>" + rmTitle +
                     "<tr>");
 
             tagView.append("</tr>");
@@ -71,8 +87,10 @@ public class DirectionsTag extends TagSupport {
                         "<td> " + directions.get(i).getDestTime() + " </td>" +
                         "<td> " + directions.get(i).getBasicPrice() + " </td>" +
                         "<td> " + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + " </td>" +
-                        "<td>  <input type=\"button\" value=\"BUY\" onclick=\"window.location = '/newOrder?id=" +
-                        directions.get(i).getId() + "'\" </td>");
+                        (directions.get(i).getLeftPlaces() > 0 ?
+                                "<td>  <input type='button' value=\"" + localedDict.getString("Buy") +
+                                        " \" onclick=\"window.location = '/newOrder?id=" + directions.get(i).getId() + "'\" </td>" :
+                                "<td></td>"));
                 if (admin == 3) {
                     tagView.append(rmButton1 + directions.get(i).getId() + rmButton2);
                 }

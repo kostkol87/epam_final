@@ -1,6 +1,6 @@
 package Utils;
 
-import DAObjects.Direction;
+import DAO.Entities.Direction;
 import Utils.ConnectionPool.ConnectionPool;
 
 import java.sql.Connection;

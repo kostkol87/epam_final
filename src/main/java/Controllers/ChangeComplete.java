@@ -1,7 +1,7 @@
 package Controllers;
 
 
-import DAObjects.EntitiesUtils;
+import DAO.Utils.Orders;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -13,8 +13,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/changeComplete")
-public class ChangeComplete extends HttpServlet{
+public class ChangeComplete extends HttpServlet {
     private static final Logger log = Logger.getLogger(ChangeComplete.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processChanged(req, resp);
@@ -25,25 +26,19 @@ public class ChangeComplete extends HttpServlet{
         processChanged(req, resp);
     }
 
-    protected void processChanged(HttpServletRequest req, HttpServletResponse resp){
+    protected void processChanged(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
+
         int passCount = Integer.parseInt(req.getParameter("passengersCount"));
+
         boolean needBaggage = Boolean.parseBoolean(req.getParameter("baggage"));
         boolean needPriority = Boolean.parseBoolean(req.getParameter("priotityQueue"));
-//        System.out.println(">>>>>>"+ session.getAttribute("changing") + "<<<<<<");
+
         int changingOrderId = Integer.parseInt((String) session.getAttribute("changing"));
 
-        EntitiesUtils.changeOrder(changingOrderId, passCount, needBaggage, needPriority);
-        try {
-            req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
-            log.warn("forward troubles!");
-        } catch (ServletException | IOException e) {
-            try {
-                req.getRequestDispatcher("jsp/workspace.jsp.jsp").forward(req, resp);
-            } catch (ServletException | IOException e1) {
-                e1.printStackTrace();
-            }
-        }
+        Orders.changeOrder(changingOrderId, passCount, needBaggage, needPriority);
+        req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
+        log.warn("forward troubles!");
 
     }
 }

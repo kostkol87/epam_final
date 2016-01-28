@@ -1,6 +1,8 @@
 package Controllers;
 
-import DAObjects.EntitiesUtils;
+import DAO.Entities.Order;
+import DAO.Utils.Orders;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +13,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/payOk")
-public class PaymentComplete extends HttpServlet{
+public class PaymentComplete extends HttpServlet {
+    private static final Logger log = Logger.getLogger(PaymentComplete.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         paymentComplete(req, resp);
@@ -22,21 +26,16 @@ public class PaymentComplete extends HttpServlet{
         paymentComplete(req, resp);
     }
 
-    protected void paymentComplete(HttpServletRequest req, HttpServletResponse resp){
+    protected void paymentComplete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         String paramId = req.getParameter("id");
-        DAObjects.Order order = (DAObjects.Order) session.getAttribute("order");
-        if (paramId != null){
-            EntitiesUtils.updateOrderPay(Integer.parseInt(paramId), true);
-        }else {
-            if (order != null) {
-                EntitiesUtils.updateOrderPay(order.getId(), true);
-            }
+        DAO.Entities.Order order = (Order) session.getAttribute("order");
+        if (paramId != null) {
+            Orders.updateOrderPay(Integer.parseInt(paramId), true);
+        } else {
+            if (order != null) Orders.updateOrderPay(order.getId(), true);
         }
-        try {
-            req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
+
+        req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
     }
 }

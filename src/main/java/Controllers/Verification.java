@@ -1,7 +1,7 @@
 package Controllers;
 
-import DAObjects.EntitiesUtils;
-import DAObjects.User;
+import DAO.Entities.User;
+import DAO.Utils.Users;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -27,7 +27,7 @@ public class Verification extends HttpServlet {
 
     /**
      * check if user's login(email) or password incorrect redirects to fail-page,
-     * if all ok - saved into seesion object {@link DAObjects.User}
+     * if all ok - saved into seesion object {@link DAO.Entities.User}
      * @param req
      * @param resp
      */
@@ -41,7 +41,7 @@ public class Verification extends HttpServlet {
                 req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             }
 
-            User user = EntitiesUtils.getUser(login);
+            User user = Users.getUser(login);
 
             if (password.equals(user.getPassword())) {
                 session.setAttribute("user", user);
