@@ -32,23 +32,23 @@ public class Payment extends HttpServlet {
     }
 
     protected void processPayment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("IN PAYMENT");
         HttpSession session = req.getSession(true);
 
         Direction orderDirection = (Direction) session.getAttribute("newOrder");
+        System.out.println(orderDirection);
         User thisUser = (User) session.getAttribute("user");
         int count = 0;
         try {
             count = Integer.parseInt(req.getParameter("passengersCount"));
         } catch (NumberFormatException e) {
             req.setAttribute("capacityFail", true);
-            try {
-                req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
-            } catch (ServletException | IOException e1) {
-                e1.printStackTrace();
-            }
+            req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
         }
         boolean needBaggage = checkBox(req.getParameter("baggage"));
         boolean neenPriority = checkBox(req.getParameter("priotityQueue"));
+
+        System.out.println(needBaggage + "   :   " + neenPriority);
 
         double summa = 0;
 
@@ -61,11 +61,14 @@ public class Payment extends HttpServlet {
         }
 
         summa = summa * count;
+        System.out.println("    summa   : 0" + summa);
         session.setAttribute("summa", summa);
         DAO.Entities.Order order = Orders.addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
         if (order == null) {
             req.setAttribute("capacityFail", true);
             req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
+        }else {
+            req.getRequestDispatcher("/jsp/payment.jsp").forward(req, resp);
         }
         req.setAttribute("capacityFail", false);
         session.setAttribute("order", order);

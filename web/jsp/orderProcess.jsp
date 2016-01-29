@@ -11,7 +11,7 @@
 
 <h2><fmt:message key="Customize"/> :</h2>
 <b><fmt:message key="attention"/> </b>
-<form action="/payment">
+<form action="/payment" method="post">
     <table border="1">
         <tr>
             <td>

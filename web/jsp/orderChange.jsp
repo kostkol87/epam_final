@@ -19,7 +19,7 @@
         <fmt:message key='PassCount'/>:
       </td>
       <td>
-        <input type="text" name="<fmt:message key='PassCount'/>" required placeholder="<fmt:message key='PassCount'/>">
+        <input type="text" name="passengersCount" required placeholder="<fmt:message key='PassCount'/>">
       </td>
     </tr>
 
@@ -28,7 +28,7 @@
         <fmt:message key='NeedBaggage'/>(+45€):
       </td>
       <td>
-        <input type="checkbox" name="<fmt:message key='Baggage'/>">
+        <input type="checkbox" name="baggage">
       </td>
     </tr>
 
@@ -37,7 +37,7 @@
         <fmt:message key='NeedPriority'/>(+30€):
       </td>
       <td>
-        <input type="checkbox" name="<fmt:message key='Priority'/>">
+        <input type="checkbox" name="priotityQueue">
       </td>
     </tr>
   </table>
