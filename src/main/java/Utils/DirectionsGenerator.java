@@ -50,7 +50,6 @@ public class DirectionsGenerator {
         int cap = ThreadLocalRandom.current().nextInt(50, 200);
         direction.setCapacity(cap);
         direction.setLeftPlaces(cap);
-        System.out.println(direction);
         return direction;
     }
 
