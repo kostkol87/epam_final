@@ -31,14 +31,22 @@ public class ChangeComplete extends HttpServlet {
 
         int passCount = Integer.parseInt(req.getParameter("passengersCount"));
 
-        boolean needBaggage = Boolean.parseBoolean(req.getParameter("baggage"));
-        boolean needPriority = Boolean.parseBoolean(req.getParameter("priotityQueue"));
+        String baggage = req.getParameter("baggage");
+        String priotityQueue = req.getParameter("priotityQueue");
+
+        boolean needBaggage = false;
+        boolean needPriority = false;
+
+        if (baggage != null){
+            needBaggage = baggage.equals("on");
+        }
+        if (priotityQueue != null){
+            needPriority = priotityQueue.equals("on");
+        }
 
         int changingOrderId = Integer.parseInt((String) session.getAttribute("changing"));
 
         Orders.changeOrder(changingOrderId, passCount, needBaggage, needPriority);
         req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
-        log.warn("forward troubles!");
-
     }
 }

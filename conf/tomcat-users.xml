@@ -35,4 +35,9 @@
   <user username="tomcat" password="tomcat" roles="tomcat,manager-gui"/>
   <user username="both" password="tomcat" roles="tomcat,role1"/>
   <user username="role1" password="tomcat" roles="role1"/>
+
+  <!--<role rolename="admin"/>-->
+  <!--<role rolename="user"/>-->
+  <!--<user username="admin" password="tomcatadmin" roles="admin"/>-->
+  <!--<user username="user" password="user" roles="user"/>-->
 </tomcat-users>
