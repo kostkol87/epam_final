@@ -29,21 +29,20 @@ public class RemoveDirection extends HttpServlet {
      * @param resp
      * @throws IOException
      */
-    protected void processRemoving(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void processRemoving(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         int rmDirId = Integer.valueOf(req.getParameter("id"));
-        String redirection = "10; URL=http://" + req.getHeader("host") + "/jsp/workspace.jsp";
+        String redirection = "5; URL=http://" + req.getHeader("host") + "/jsp/workspace.jsp";
 
         if (Directions.isEmptyDirection(rmDirId)) {
             Directions.removeDirection(rmDirId);
-            resp.getWriter().print("Direction was removed successfully!\n you'll be redirect in 10 sec.");
             resp.setHeader("Refresh", redirection);
+            req.getRequestDispatcher("jsp/removed.jsp").forward(req, resp);
+
 
         } else {
-            resp.getWriter().print("There are passengers who have already bought tickets!" +
-                    "May be we're low-cost, but we're too honest =)" +
-                    "\n you'll be redirect in 10 sec.");
             resp.setHeader("Refresh", redirection);
+            req.getRequestDispatcher("jsp/notRemoved.jsp").forward(req, resp);
         }
     }
 }
