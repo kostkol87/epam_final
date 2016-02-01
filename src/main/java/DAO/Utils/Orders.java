@@ -3,7 +3,7 @@ package DAO.Utils;
 import DAO.Entities.Direction;
 import DAO.Entities.Order;
 import DAO.Entities.User;
-import Utils.ConnectionPool.ConnectionPool;
+import Utils.cp.Pool;
 import com.mysql.jdbc.Statement;
 import org.apache.log4j.Logger;
 
@@ -24,10 +24,8 @@ public class Orders {
             return null;
         }
         Order newOrder = new Order();
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
         PreparedStatement preparedStatement;
-        try {
+        try (Connection connection = Pool.getInstance().getConnection()){
             preparedStatement = connection.prepareStatement(
                     "INSERT INTO orders (direction, quantity, baggage, priority_queue, client, summa, paid)" +
                             " VALUES (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
@@ -56,18 +54,14 @@ public class Orders {
         } catch (SQLException e) {
             log.warn("SQLException in addOrder");
             e.printStackTrace();
-        } finally {
-            pool.free(connection);
         }
         return newOrder;
     }
 
     public static List<Order> getOrders(int id) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
         User user = null;
         orders = new ArrayList<>();
-        try {
+        try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, direction, quantity, baggage, priority_queue, client, summa, paid FROM orders WHERE client=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -92,8 +86,6 @@ public class Orders {
         } catch (SQLException e) {
             log.warn("SQLException in getOrders");
             e.printStackTrace();
-        } finally {
-            pool.free(connection);
         }
         user = null;
         return orders;
@@ -101,10 +93,8 @@ public class Orders {
 
     public static Order getOrder(int id) {
         Order order = new Order();
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
         User user = null;
-        try {
+        try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, direction, quantity, baggage, priority_queue, client, summa, paid FROM orders WHERE id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -133,9 +123,7 @@ public class Orders {
     }
 
     public static void updateOrderPay(int orderId, boolean isPaid) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try {
+        try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT left_places FROM directions WHERE id=(SELECT direction FROM  orders WHERE id=?)");
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -165,15 +153,11 @@ public class Orders {
         } catch (SQLException e) {
             log.warn("SQLException in updateOrderPay");
             e.printStackTrace();
-        } finally {
-            pool.free(connection);
         }
     }
 
     public static void removeOrder(int orderId) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try {
+        try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM orders WHERE id=?"
             );
@@ -182,15 +166,11 @@ public class Orders {
         } catch (SQLException e) {
             log.warn("SQLException in removeOrder");
             e.printStackTrace();
-        }finally {
-            pool.free(connection);
         }
     }
 
     public static void changeOrder(int orderId, int passangersCount, boolean needBaggage, boolean needPriority){
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try{
+        try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT direction FROM orders WHERE id=?");
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -219,8 +199,6 @@ public class Orders {
         } catch (SQLException e) {
             log.warn("SQLException in changeOrder");
             e.printStackTrace();
-        }finally {
-            pool.free(connection);
         }
     }
 }

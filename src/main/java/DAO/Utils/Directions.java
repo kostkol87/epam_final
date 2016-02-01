@@ -1,7 +1,7 @@
 package DAO.Utils;
 
 import DAO.Entities.Direction;
-import Utils.ConnectionPool.ConnectionPool;
+import Utils.cp.Pool;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -24,9 +24,8 @@ public class Directions {
     public static int directionsCount;
     public static void addDirection(String departure, Date depTime, String destination, Date destTime,
                                     double basicPrice, double dateMultiplier, double fillMultiplier, int capacity){
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try{
+
+        try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO directions " +
                             "(departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity, left_places) " +
@@ -44,8 +43,6 @@ public class Directions {
             log.debug("new direction was added !!!");
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            pool.free(connection);
         }
     }
     public static Direction getDirection(int id) {
@@ -63,9 +60,7 @@ public class Directions {
 
     public static List<Direction> getDirections() {
         directions = new ArrayList<>();
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try {
+        try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("" +
                             "SELECT id, departure, dep_date, destination, dest_date," +
                             " basic_price, date_multiplier, fill_multiplier, " +
@@ -93,8 +88,6 @@ public class Directions {
         } catch (ParseException e) {
             log.warn("ParseException in addOrder");
             e.printStackTrace();
-        } finally {
-            pool.free(connection);
         }
         directionsCount = directions.size();
 
@@ -102,10 +95,8 @@ public class Directions {
     }
 
     public static boolean isEmptyDirection(int id){
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
         boolean result = false;
-        try{
+        try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM orders WHERE direction=? AND paid=1");
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -113,17 +104,13 @@ public class Directions {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            pool.free(connection);
         }
 
         return result;
     }
 
     public static void removeDirection(int id){
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        try{
+        try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE directions, orders  FROM directions  INNER JOIN orders\n" +
                             "WHERE directions.id = orders.direction and directions.id=?;");
@@ -131,8 +118,6 @@ public class Directions {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            pool.free(connection);
         }
         log.debug("direction with id=" + id + "was deleted!");
     }

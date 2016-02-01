@@ -1,6 +1,6 @@
 package Listeners;
 
-import Utils.ConnectionPool.ConnectionPool;
+import Utils.cp.Pool;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -14,6 +14,6 @@ public class CntxtListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ConnectionPool.getInstance();
+        Pool.getInstance().getConnection();
     }
 }

@@ -1,7 +1,7 @@
 package Utils;
 
 import DAO.Entities.Direction;
-import Utils.ConnectionPool.ConnectionPool;
+import Utils.cp.Pool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,14 +20,14 @@ public class DirectionsGenerator {
     Random rand = new Random();
     private void getCities() throws SQLException {
         cities = new ArrayList<>();
-        Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT city FROM cities;");
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()){
-            cities.add(resultSet.getString("city"));
+        try(Connection connection = Pool.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT city FROM cities;");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                cities.add(resultSet.getString("city"));
+            }
+            preparedStatement.close();
         }
-        preparedStatement.close();
-        ConnectionPool.getInstance().free(connection);
     }
     private Date[] getRandomDate(){
         Random rnd = new Random();
@@ -55,28 +55,28 @@ public class DirectionsGenerator {
 
     private void directionToDb() throws SQLException {
         List<Direction> directions = new ArrayList<>();
-        Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(
-                "INSERT INTO directions (departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity, left_places) VALUES (?,?,?,?,?,?,?,?,?);");
+        try(Connection connection = Pool.getInstance().getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO directions (departure, dep_date, destination, dest_date, basic_price, date_multiplier, fill_multiplier, capacity, left_places) VALUES (?,?,?,?,?,?,?,?,?);");
 
-        for (int i = 0; i < 100; i++) {
-            directions.add(new DirectionsGenerator().generateDirection());
+            for (int i = 0; i < 100; i++) {
+                directions.add(new DirectionsGenerator().generateDirection());
+            }
+            for (Direction direction : directions) {
+                preparedStatement.setString(1, direction.getDeparture());
+                preparedStatement.setString(2, sdf.format(direction.getDepTime()));
+                preparedStatement.setString(3, direction.getDestination());
+                preparedStatement.setString(4, sdf.format(direction.getDestTime()));
+                preparedStatement.setDouble(5, direction.getBasicPrice());
+                preparedStatement.setDouble(6, direction.getDateMultiplier());
+                preparedStatement.setDouble(7, direction.getFillMultiplier());
+                preparedStatement.setInt(8, direction.getCapacity());
+                preparedStatement.setInt(9, direction.getLeftPlaces());
+                preparedStatement.executeUpdate();
+            }
+            System.out.println("ALL DONE");
+            preparedStatement.close();
         }
-        for (Direction direction:directions){
-            preparedStatement.setString(1,direction.getDeparture());
-            preparedStatement.setString(2, sdf.format(direction.getDepTime()));
-            preparedStatement.setString(3, direction.getDestination());
-            preparedStatement.setString(4, sdf.format(direction.getDestTime()));
-            preparedStatement.setDouble(5, direction.getBasicPrice());
-            preparedStatement.setDouble(6, direction.getDateMultiplier());
-            preparedStatement.setDouble(7, direction.getFillMultiplier());
-            preparedStatement.setInt(8, direction.getCapacity());
-            preparedStatement.setInt(9, direction.getLeftPlaces());
-            preparedStatement.executeUpdate();
-        }
-        System.out.println("ALL DONE");
-        preparedStatement.close();
-        ConnectionPool.getInstance().free(connection);
     }
     public static void main(String[] args) throws SQLException {
         new DirectionsGenerator().directionToDb();
