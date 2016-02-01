@@ -16,11 +16,11 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
-
+    <fmt:bundle basename="local">
     <title><fmt:message key="Workspace"/> </title>
 </head>
 <body>
-<fmt:bundle basename="local">
+
     <div class="top-menu">
         <a href="/logout"><fmt:message key="LogOut"/></a> <a href="/locale?loc=ru_RU&target=${pageContext.request.servletPath}">ru</a>  <a href="/locale?loc=en_US&target=${pageContext.request.servletPath}">en</a>
         <h2 id="status"><fmt:message key="Hello"/>, ${pageContext.session.getAttribute('user').getName()} ${pageContext.session.getAttribute('user').getSurname()} </h2>
