@@ -28,9 +28,13 @@ public class ChangeComplete extends HttpServlet {
 
     protected void processChanged(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
-
-        int passCount = Integer.parseInt(req.getParameter("passengersCount"));
-
+        int passCount = 0;
+        try {
+            passCount = Integer.parseInt(req.getParameter("passengersCount"));
+        }catch (NumberFormatException e){
+            log.warn("bad pass count!");
+            req.getRequestDispatcher("jsp/orderChange.jsp").forward(req, resp);
+        }
         String baggage = req.getParameter("baggage");
         String priotityQueue = req.getParameter("priotityQueue");
 
