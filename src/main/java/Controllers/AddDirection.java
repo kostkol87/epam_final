@@ -2,6 +2,7 @@ package Controllers;
 
 
 import DAO.Utils.Directions;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import java.util.Date;
 
 @WebServlet("/addDirection")
 public class AddDirection extends HttpServlet {
-
+    private static final Logger log = Logger.getLogger(AddDirection.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processAdded(req, resp);
@@ -52,8 +53,10 @@ public class AddDirection extends HttpServlet {
             fillMult = Double.parseDouble(req.getParameter("fillMult"));
 
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException | NumberFormatException e) {
+            log.warn("direction addiction form filling error!");
+            req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
+            return;
         }
 
         Directions.addDirection(fieldDeparture, depTime, fieldDestination, destTime, basicPrice, dateMult, fillMult, capacity);
