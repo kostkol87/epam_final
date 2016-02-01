@@ -10,10 +10,16 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="http://www.modernizr.com/downloads/modernizr-latest.js"></script>
     <script type="text/javascript" src="../statics/js/placeholder.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/utils.js"></script>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-
+    <script type="text/javascript">
+        function accept(id) {
+            if (confirm("Are you sure want to delete this direction id=" + id + "?") == true) {
+                window.location = '/removeDirection?id=' + id;
+            } else {
+                return;
+            }
+        }
+    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <fmt:setLocale value="${pageContext.session.getAttribute('locale')}"/>
     <fmt:bundle basename="local">
@@ -36,6 +42,7 @@
         <h3 id="text"><fmt:message key="DList"/> </h3><br>
         <c:set var="role" scope="session" value="${pageContext.session.getAttribute('user').getRole()}"/>
         <c:if test="${role == 3}">
+            <form action="/addDirection">
                 <table border="2">
                     <tr>
                         <td><b> <fmt:message key="youAdmin"/> </b></td>
@@ -63,6 +70,7 @@
                         <td><input type="submit" value="<fmt:message key="Add"/>"></td>
                     <tr>
                 </table>
+            </form>
             <br>
         </c:if>
     </div>
