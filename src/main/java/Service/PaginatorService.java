@@ -1,29 +1,21 @@
-package Controllers;
+package Service;
 
-import DAO.Utils.Directions;
+
+import DataBase.DAO.Directions;
 import JSTL.DirectionsTag;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/page")
-public class Paginator extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processPaginate(req, resp);
+public class PaginatorService extends AbstactService{
+    public PaginatorService(HttpServletRequest req, HttpServletResponse resp) {
+        super(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processPaginate(req, resp);
-    }
-
-    protected void processPaginate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void processPaginate() throws ServletException, IOException {
         String moveTo = req.getParameter("fwd");
         String target = req.getParameter("target");
         HttpSession session = req.getSession(true);
@@ -53,6 +45,5 @@ public class Paginator extends HttpServlet {
                 break;
             }
         }
-
     }
 }

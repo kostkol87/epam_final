@@ -1,7 +1,7 @@
 package Utils;
 
-import DAO.Entities.Direction;
-import Utils.cp.Pool;
+import DataBase.Entities.Direction;
+import DataBase.ConnectionPool.Pool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

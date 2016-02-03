@@ -1,32 +1,20 @@
-package Controllers;
+package Service;
 
-
-import DAO.Utils.Directions;
-import org.apache.log4j.Logger;
+import DataBase.DAO.Directions;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-@WebServlet("/addDirection")
-public class AddDirection extends HttpServlet {
-    private static final Logger log = Logger.getLogger(AddDirection.class);
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processAdded(req, resp);
+public class DirectionsService extends AbstactService{
+    public DirectionsService(HttpServletRequest req, HttpServletResponse resp) {
+        super(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processAdded(req, resp);
-    }
-
-    private void processAdded(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void processAdded() throws ServletException, IOException {
         String fieldDeparture = req.getParameter("fieldDeparture");
         String fieldDestination = req.getParameter("fieldDestination");
 
@@ -61,5 +49,20 @@ public class AddDirection extends HttpServlet {
 
         Directions.addDirection(fieldDeparture, depTime, fieldDestination, destTime, basicPrice, dateMult, fillMult, capacity);
         req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
+    }
+
+    public void processRemoving() throws ServletException, IOException {
+        int rmDirId = Integer.valueOf(req.getParameter("id"));
+        String redirection = "5; URL=http://" + req.getHeader("host") + "/jsp/workspace.jsp";
+
+        if (Directions.isEmptyDirection(rmDirId)) {
+            Directions.removeDirection(rmDirId);
+            resp.setHeader("Refresh", redirection);
+            req.getRequestDispatcher("jsp/removed.jsp").forward(req, resp);
+
+        } else {
+            resp.setHeader("Refresh", redirection);
+            req.getRequestDispatcher("jsp/notRemoved.jsp").forward(req, resp);
+        }
     }
 }

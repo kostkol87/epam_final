@@ -1,7 +1,7 @@
-package DAO.Utils;
+package DataBase.DAO;
 
-import DAO.Entities.User;
-import Utils.cp.Pool;
+import DataBase.Entities.User;
+import DataBase.ConnectionPool.Pool;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

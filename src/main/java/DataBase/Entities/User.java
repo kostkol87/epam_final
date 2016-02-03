@@ -1,4 +1,4 @@
-package DAO.Entities;
+package DataBase.Entities;
 
 /**
  * User entity

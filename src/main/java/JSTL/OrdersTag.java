@@ -1,7 +1,7 @@
 package JSTL;
 
-import DAO.Entities.Order;
-import DAO.Utils.Orders;
+import DataBase.Entities.Order;
+import DataBase.DAO.Orders;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;

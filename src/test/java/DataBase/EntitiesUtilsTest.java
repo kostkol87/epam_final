@@ -1,7 +1,7 @@
-package DAO;
+package DataBase;
 
-import DAO.Entities.Direction;
-import DAO.Utils.Directions;
+import DataBase.Entities.Direction;
+import DataBase.DAO.Directions;
 
 import java.util.List;
 
