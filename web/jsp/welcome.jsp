@@ -11,6 +11,8 @@
     </head>
 
     <body>
+        <img height="300" align="left" src="../statics/images/1.gif">
+        <img height="300" align="right" src="../statics/images/2.gif">
     <div class="top-menu">
         <a href="/locale?loc=ru_RU&target=${pageContext.request.servletPath}">ru</a> <a
             href="/locale?loc=en_US&target=${pageContext.request.servletPath}">en</a>
