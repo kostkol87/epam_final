@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
+    ${pageContext.session.getAttribute("user") == null? pageContext.forward("/jsp/loginFail.jsp"): pass}
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="../statics/css/style.css"/>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>

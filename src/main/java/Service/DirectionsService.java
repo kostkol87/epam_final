@@ -9,12 +9,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
-public class DirectionsService extends AbstactService{
+public class DirectionsService extends AbstractService {
     public DirectionsService(HttpServletRequest req, HttpServletResponse resp) {
         super(req, resp);
     }
 
     public void processAdded() throws ServletException, IOException {
+        auth();
         String fieldDeparture = req.getParameter("fieldDeparture");
         String fieldDestination = req.getParameter("fieldDestination");
 
@@ -52,6 +53,7 @@ public class DirectionsService extends AbstactService{
     }
 
     public void processRemoving() throws ServletException, IOException {
+        auth();
         int rmDirId = Integer.valueOf(req.getParameter("id"));
         String redirection = "5; URL=http://" + req.getHeader("host") + "/jsp/workspace.jsp";
 

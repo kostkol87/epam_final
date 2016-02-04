@@ -75,8 +75,8 @@ public class DirectionsTag extends TagSupport {
                     "<tr>");
 
             tagView.append("</tr>");
-            for (int i = (page - 1) * 25; i < ON_PAGE * page; i++) {
-                if (i == count) break;
+            for (int i = (page - 1) * 25;i < ON_PAGE * page; i++) {
+                if (i == count || i < 0) break;
                 if (directions.get(i) == null) {
                     continue;
                 }

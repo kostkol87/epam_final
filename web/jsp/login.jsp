@@ -25,8 +25,8 @@
     </div>
 
 	<form id="slick-login" action="/logged" method="post">
-		<label for="username"><fmt:message key="login"/></label><input type="text" name="loginField" class="placeholder" placeholder="admin@example.com">
-		<label for="password"><fmt:message key="password" /></label><input type="password" name="passField" class="placeholder" placeholder="<fmt:message key='password' />">
+		<label for="username"><fmt:message key="login"/></label><input type="text" name="loginField" class="placeholder" required placeholder="admin@example.com">
+		<label for="password"><fmt:message key="password" /></label><input type="password" name="passField" class="placeholder" required placeholder="<fmt:message key='password' />">
 		<input type="submit" value="<fmt:message key='LogIn'/> ">
 
 	</form>

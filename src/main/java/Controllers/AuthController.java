@@ -37,7 +37,7 @@ public class AuthController extends HttpServlet {
                 services.processLogout();
                 break;
             }case ("/register"):{
-                services.processLogout();
+                services.processRegister();
                 break;
             }case ("/logged"):{
                 services.processValidate();

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LocalizationService extends AbstactService {
+public class LocalizationService extends AbstractService {
     public LocalizationService(HttpServletRequest req, HttpServletResponse resp) {
         super(req, resp);
     }

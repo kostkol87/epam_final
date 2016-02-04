@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthServices extends AbstactService{
+public class AuthServices extends AbstractService {
 
     public AuthServices(HttpServletRequest req, HttpServletResponse resp) {
         super(req, resp);
