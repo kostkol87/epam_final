@@ -19,7 +19,6 @@ public class OrdersService extends AbstractService {
     }
 
     public void processNewOrder() throws ServletException, IOException {
-        auth();
         int orderId = Integer.parseInt(req.getParameter("id"));
         List<Direction> directions =  Directions.getDirections();
         for (Direction direct : directions) {
@@ -32,7 +31,6 @@ public class OrdersService extends AbstractService {
     }
 
     public void processChangeOrder() throws ServletException, IOException {
-        auth();
         String id = req.getParameter("id");
         String removeId = req.getParameter("removeId");
 
@@ -52,7 +50,6 @@ public class OrdersService extends AbstractService {
     }
 
     public void processChangeComplete() throws ServletException, IOException {
-        auth();
         int passCount = 0;
         try {
             passCount = Integer.parseInt(req.getParameter("passengersCount"));
@@ -89,7 +86,6 @@ public class OrdersService extends AbstractService {
     }
 
     public void processPayment() throws ServletException, IOException {
-        auth();
         Direction orderDirection = (Direction) session.getAttribute("newOrder");
         User thisUser = (User) session.getAttribute("user");
         int count = 0;
@@ -129,7 +125,6 @@ public class OrdersService extends AbstractService {
     }
 
     public void processPaymentComplete() throws ServletException, IOException {
-        auth();
         String paramId = req.getParameter("id");
         DataBase.Entities.Order order = (Order) session.getAttribute("order");
         if (paramId != null) {

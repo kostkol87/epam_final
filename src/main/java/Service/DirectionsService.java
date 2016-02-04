@@ -16,7 +16,6 @@ public class DirectionsService extends AbstractService {
     }
 
     public void processAdded() throws ServletException, IOException {
-        auth();
         String fieldDeparture = req.getParameter("fieldDeparture");
         String fieldDestination = req.getParameter("fieldDestination");
 
@@ -54,7 +53,6 @@ public class DirectionsService extends AbstractService {
     }
 
     public void processRemoving() throws ServletException, IOException {
-        auth();
         int rmDirId = Integer.valueOf(req.getParameter("id"));
         String redirection = "5; URL=http://" + req.getHeader("host") + "/jsp/workspace.jsp";
 

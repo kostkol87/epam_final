@@ -18,10 +18,4 @@ public abstract class AbstractService {
         this.resp = resp;
         session = req.getSession(true);
     }
-
-    protected void auth(){
-        if (session.getAttribute("user") == null){
-                resp.setStatus(403);
-        }
-    }
 }
