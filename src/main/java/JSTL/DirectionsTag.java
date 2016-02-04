@@ -2,6 +2,7 @@ package JSTL;
 
 import DataBase.Entities.Direction;
 import DataBase.DAO.Directions;
+import Service.DirectionsService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspException;
@@ -85,7 +86,7 @@ public class DirectionsTag extends TagSupport {
                         "<td> " + directions.get(i).getDestination() + " </td>" +
                         "<td> " + directions.get(i).getDepTime() + " </td>" +
                         "<td> " + directions.get(i).getDestTime() + " </td>" +
-                        "<td> " + directions.get(i).getBasicPrice() + " </td>" +
+                        "<td> " + DirectionsService.getActualPrice(directions.get(i)) + " </td>" +
                         "<td> " + directions.get(i).getCapacity() + "/" + directions.get(i).getLeftPlaces() + " </td>" +
                         (directions.get(i).getLeftPlaces() > 0 ?
                                 "<td>  <input type='button' value=\"" + localedDict.getString("Buy") +

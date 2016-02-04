@@ -1,6 +1,7 @@
 package Service;
 
 import DataBase.DAO.Directions;
+import DataBase.Entities.Direction;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -66,5 +67,24 @@ public class DirectionsService extends AbstractService {
             resp.setHeader("Refresh", redirection);
             req.getRequestDispatcher("jsp/notRemoved.jsp").forward(req, resp);
         }
+    }
+
+    public static double getActualPrice(Direction direction) {
+        /**
+         * if there is less than 30 days on departure, price become bigger
+         * if there are less than 50% places aboard lef, price become bigger
+         */
+        final int DAY = 1000 * 60 * 60 * 24;
+        long today = new Date().getTime();
+        double basicPrice = direction.getBasicPrice();
+        double price = basicPrice;
+        if ((direction.getDepTime().getTime() - today) / DAY < 30) {
+            price += (direction.getDateMultiplier() - 1) * basicPrice;
+
+        }
+        if ((double) direction.getLeftPlaces() / (double) direction.getCapacity() < 0.5) {
+            price += (direction.getFillMultiplier() - 1) * basicPrice;
+        }
+        return Math.round(price);
     }
 }

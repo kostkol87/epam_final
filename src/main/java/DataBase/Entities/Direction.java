@@ -16,7 +16,6 @@ public class Direction {
     private double fillMultiplier;
     private int capacity;
     private int leftPlaces;
-    private static final int DAY = 1000 * 60 * 60 * 24;
 
 
     public int getId() {
@@ -65,20 +64,7 @@ public class Direction {
     }
 
     public void setBasicPrice(double basicPrice) {
-        /**
-         * if there is less than 30 days on departure, price become bigger
-         * if there are less than 50% places aboard lef, price become bigger
-         */
-        long today = new Date().getTime();
-        double price = basicPrice;
-        if ((depTime.getTime() - today) / DAY < 30) {
-            price += (dateMultiplier - 1) * basicPrice;
-
-        }
-        if ((double) leftPlaces / (double) capacity < 0.5) {
-            price += (fillMultiplier - 1) * basicPrice;
-        }
-        this.basicPrice = price;
+        this.basicPrice = basicPrice;
     }
 
     public double getDateMultiplier() {
