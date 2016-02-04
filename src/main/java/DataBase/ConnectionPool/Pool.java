@@ -15,8 +15,8 @@ public class Pool {
 
     private static final Logger log = Logger.getLogger(Pool.class);
     public static final int GET_CONNECTION_MILLIS = 1000;
-    public static final String PROPERTIES_PATH = "C:\\epam_final\\src\\main\\resources\\pool.properties";
-//        public static final String PROPERTIES_PATH = "/usr/local/apache-tomcat-9.0.0.M1/webapps/ROOT/WEB-INF/classes/pool.properties";
+//    public static final String PROPERTIES_PATH = "C:\\epam_final\\src\\main\\resources\\pool.properties";
+        public static final String PROPERTIES_PATH = "/usr/local/apache-tomcat-9.0.0.M1/webapps/ROOT/WEB-INF/classes/pool.properties";
     private static Pool INSTANCE;
 
     public static Pool getInstance() {
