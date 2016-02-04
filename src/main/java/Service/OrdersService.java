@@ -56,6 +56,9 @@ public class OrdersService extends AbstractService {
         int passCount = 0;
         try {
             passCount = Integer.parseInt(req.getParameter("passengersCount"));
+            if (passCount < 0){
+                req.getRequestDispatcher("jsp/orderChange.jsp").forward(req, resp);
+            }
         }catch (NumberFormatException e){
             log.warn("bad pass count!");
             req.getRequestDispatcher("jsp/orderChange.jsp").forward(req, resp);
@@ -92,6 +95,9 @@ public class OrdersService extends AbstractService {
         int count = 0;
         try {
             count = Integer.parseInt(req.getParameter("passengersCount"));
+            if (count < 0){
+                req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
+            }
         } catch (NumberFormatException e) {
             req.setAttribute("capacityFail", true);
             req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
