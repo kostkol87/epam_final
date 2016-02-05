@@ -1,4 +1,4 @@
-package Service;
+package service;
 
 import org.apache.log4j.Logger;
 
@@ -9,11 +9,11 @@ import javax.servlet.http.HttpSession;
 public abstract class AbstractService {
     protected static final Logger log = Logger.getLogger(AbstractService.class);
 
-    HttpServletRequest req;
-    HttpServletResponse resp;
-    HttpSession session;
+    protected HttpServletRequest req;
+    protected HttpServletResponse resp;
+    protected HttpSession session;
 
-    AbstractService(HttpServletRequest req, HttpServletResponse resp){
+    protected AbstractService(HttpServletRequest req, HttpServletResponse resp){
         this.req = req;
         this.resp = resp;
         session = req.getSession(true);

@@ -1,7 +1,7 @@
-package DataBase.DAO;
+package dataBase.DAO;
 
-import DataBase.Entities.User;
-import DataBase.ConnectionPool.Pool;
+import dataBase.connectionPool.Pool;
+import dataBase.entities.User;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -11,9 +11,10 @@ import java.sql.SQLException;
 
 public class Users {
     private static final Logger log = Logger.getLogger(Users.class);
+
     public static User getUser(int id) {
         User user = new User();
-        try (Connection connection = Pool.getInstance().getConnection()){
+        try (Connection connection = Pool.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT email, password, surname, name, patronomic, role FROM flight_discounter.user WHERE id=?");
             preparedStatement.setInt(1, id);
@@ -39,7 +40,7 @@ public class Users {
 
     public static User getUser(String email) {
         User user = new User();
-        try (Connection connection = Pool.getInstance().getConnection()){
+        try (Connection connection = Pool.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT id, password, surname, name, patronomic, role FROM flight_discounter.user WHERE email=?");
             preparedStatement.setString(1, email);
@@ -66,7 +67,7 @@ public class Users {
     }
 
     public static boolean addUser(User user) {
-        try (Connection connection = Pool.getInstance().getConnection()){
+        try (Connection connection = Pool.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "SELECT id FROM user WHERE email=?");
             preparedStatement.setString(1, user.getEmail());
@@ -84,7 +85,7 @@ public class Users {
             log.warn("SQLException in addOrder");
             throw new RuntimeException(e);
         }
-        try (Connection connection = Pool.getInstance().getConnection()){
+        try (Connection connection = Pool.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO flight_discounter.user " +
                             "(email, password, surname, name, patronomic, role)" +

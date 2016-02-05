@@ -1,11 +1,12 @@
-package Service;
+package service.logicServices;
 
 
-import DataBase.DAO.Directions;
-import DataBase.DAO.Orders;
-import DataBase.Entities.Direction;
-import DataBase.Entities.Order;
-import DataBase.Entities.User;
+import dataBase.DAO.Directions;
+import dataBase.DAO.Orders;
+import dataBase.entities.Direction;
+import dataBase.entities.Order;
+import dataBase.entities.User;
+import service.AbstractService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +56,7 @@ public class OrdersService extends AbstractService {
             passCount = Integer.parseInt(req.getParameter("passengersCount"));
             if (passCount < 0){
                 req.getRequestDispatcher("jsp/orderChange.jsp").forward(req, resp);
+                return;
             }
         }catch (NumberFormatException e){
             log.warn("bad pass count!");
@@ -93,6 +95,7 @@ public class OrdersService extends AbstractService {
             count = Integer.parseInt(req.getParameter("passengersCount"));
             if (count < 0){
                 req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
+                return;
             }
         } catch (NumberFormatException e) {
             req.setAttribute("capacityFail", true);
@@ -103,7 +106,7 @@ public class OrdersService extends AbstractService {
 
         double summa = 0;
 
-        summa += orderDirection.getBasicPrice();
+        summa += Math.round(DirectionsService.getActualPrice(orderDirection));
         if (needBaggage) {
             summa += 45;
         }
@@ -113,7 +116,7 @@ public class OrdersService extends AbstractService {
 
         summa = summa * count;
         session.setAttribute("summa", summa);
-        DataBase.Entities.Order order = Orders.addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
+        dataBase.entities.Order order = Orders.addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
         if (order == null) {
             req.setAttribute("capacityFail", true);
             req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
@@ -126,7 +129,7 @@ public class OrdersService extends AbstractService {
 
     public void processPaymentComplete() throws ServletException, IOException {
         String paramId = req.getParameter("id");
-        DataBase.Entities.Order order = (Order) session.getAttribute("order");
+        dataBase.entities.Order order = (Order) session.getAttribute("order");
         if (paramId != null) {
             Orders.updateOrderPay(Integer.parseInt(paramId), true);
         } else {

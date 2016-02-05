@@ -1,7 +1,8 @@
-package Service;
+package service.logicServices;
 
-import DataBase.DAO.Directions;
-import DataBase.Entities.Direction;
+import dataBase.DAO.Directions;
+import dataBase.entities.Direction;
+import service.AbstractService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

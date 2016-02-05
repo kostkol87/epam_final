@@ -1,4 +1,4 @@
-package DataBase.ConnectionPool;
+package dataBase.connectionPool;
 
 import org.apache.log4j.Logger;
 

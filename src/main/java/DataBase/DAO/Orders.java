@@ -1,9 +1,9 @@
-package DataBase.DAO;
+package dataBase.DAO;
 
-import DataBase.Entities.Direction;
-import DataBase.Entities.Order;
-import DataBase.Entities.User;
-import DataBase.ConnectionPool.Pool;
+import dataBase.entities.Direction;
+import dataBase.entities.Order;
+import dataBase.entities.User;
+import dataBase.connectionPool.Pool;
 import com.mysql.jdbc.Statement;
 import org.apache.log4j.Logger;
 

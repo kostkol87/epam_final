@@ -1,7 +1,7 @@
-package Utils;
+package utils;
 
-import DataBase.Entities.Direction;
-import DataBase.ConnectionPool.Pool;
+import dataBase.entities.Direction;
+import dataBase.connectionPool.Pool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

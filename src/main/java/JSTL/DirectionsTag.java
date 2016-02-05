@@ -1,8 +1,8 @@
 package JSTL;
 
-import DataBase.Entities.Direction;
-import DataBase.DAO.Directions;
-import Service.DirectionsService;
+import dataBase.entities.Direction;
+import dataBase.DAO.Directions;
+import service.logicServices.DirectionsService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.JspException;

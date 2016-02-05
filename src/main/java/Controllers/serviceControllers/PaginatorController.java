@@ -1,6 +1,6 @@
-package Controllers;
+package controllers.serviceControllers;
 
-import Service.LocalizationService;
+import service.serviceServices.PaginatorService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,22 +9,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/locale")
-public class LocaleController extends HttpServlet{
-    LocalizationService service;
+@WebServlet("/page")
+public class PaginatorController extends HttpServlet{
+    PaginatorService service;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processLocalization(req, resp);
+        processPaginate(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processLocalization(req, resp);
+        processPaginate(req, resp);
     }
 
-    protected void processLocalization(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
-        new LocalizationService(req, resp).processLocale();
+    protected void processPaginate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
+        new PaginatorService(req, resp).processPaginate();
     }
 }

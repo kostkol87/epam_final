@@ -1,6 +1,6 @@
-package Listeners;
+package listeners;
 
-import DataBase.ConnectionPool.Pool;
+import dataBase.connectionPool.Pool;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

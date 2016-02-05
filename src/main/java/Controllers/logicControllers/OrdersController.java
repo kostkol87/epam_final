@@ -1,6 +1,6 @@
-package Controllers;
+package controllers.logicControllers;
 
-import Service.OrdersService;
+import service.logicServices.OrdersService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

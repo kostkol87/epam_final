@@ -1,8 +1,9 @@
-package DataBase.DAO;
+package dataBase.DAO;
 
-import DataBase.Entities.Direction;
-import DataBase.ConnectionPool.Pool;
+import dataBase.entities.Direction;
+import dataBase.connectionPool.Pool;
 import org.apache.log4j.Logger;
+import service.logicServices.DirectionsService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +23,7 @@ public class Directions {
     public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static int directionsCount;
+
     public static void addDirection(String departure, Date depTime, String destination, Date destTime,
                                     double basicPrice, double dateMultiplier, double fillMultiplier, int capacity){
 
@@ -80,6 +82,8 @@ public class Directions {
                 newDirection.setCapacity(resultSet.getInt("capacity"));
                 newDirection.setLeftPlaces(resultSet.getInt("left_places"));
                 newDirection.setBasicPrice(resultSet.getDouble("basic_price"));
+                newDirection.setBasicPrice(DirectionsService.getActualPrice(newDirection));
+
                 directions.add(newDirection);
             }
         } catch (SQLException e) {

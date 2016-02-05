@@ -1,7 +1,7 @@
-package Controllers;
+package controllers.serviceControllers;
 
 
-import Service.AuthServices;
+import service.serviceServices.AuthServices;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

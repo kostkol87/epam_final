@@ -1,4 +1,4 @@
-package DataBase.ConnectionPool;
+package dataBase.connectionPool;
 
 import java.sql.*;
 import java.util.Map;

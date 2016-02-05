@@ -1,4 +1,4 @@
-package DataBase.Entities;
+package dataBase.entities;
 
 /**
  * User entity
