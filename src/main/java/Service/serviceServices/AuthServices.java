@@ -11,14 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthServices extends AbstractService {
-
+    private Users users;
     public AuthServices(HttpServletRequest req, HttpServletResponse resp) {
         super(req, resp);
     }
 
     public void processLogin() throws ServletException, IOException {
+
         session.setAttribute("expired", "onlogin");
         User sUser = (User) session.getAttribute("user");
+
         if (sUser != null) {
             session.setAttribute("page", 1);
             req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
@@ -57,9 +59,9 @@ public class AuthServices extends AbstractService {
         newUser.setSurname(surname);
         newUser.setName(name);
         newUser.setPatronomic(patronomic);
-
-
-        if (!Users.addUser(newUser)) {
+        users = new Users();
+        int id = users.addUser(newUser);
+        if (id == -1) {
             req.getRequestDispatcher("jsp/registerFail.jsp").forward(req, resp);
         } else {
             session.setAttribute("user", newUser);
@@ -74,8 +76,8 @@ public class AuthServices extends AbstractService {
         if (login == null || password == null){
             req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
         }
-
-        User user = Users.getUser(login);
+        users = new Users();
+        User user = users.getUser(login);
 
         if (password.equals(user.getPassword())) {
             session.setAttribute("user", user);

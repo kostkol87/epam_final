@@ -17,14 +17,22 @@ public class PaginatorService extends AbstractService {
     }
 
     public void processPaginate() throws ServletException, IOException {
+        Directions directions;
+
         String moveTo = req.getParameter("fwd");
         String target = req.getParameter("target");
+
         HttpSession session = req.getSession(true);
+
         switch (moveTo) {
             case "r": {
+                directions = new Directions();
+
+                int directionsCount = directions.getDirections().size();
                 int page = (int) session.getAttribute("page");
-                int pagesCount = Directions.directionsCount / DirectionsTag.ON_PAGE;
-                boolean hasTail = (Directions.directionsCount % DirectionsTag.ON_PAGE) != 0;
+                int pagesCount = directionsCount / DirectionsTag.ON_PAGE;
+
+                boolean hasTail = (directionsCount % DirectionsTag.ON_PAGE) != 0;
 
                 if ((page <= pagesCount && hasTail) | (page < pagesCount && !hasTail)) {
                     session.setAttribute("page", ++page);
@@ -37,6 +45,7 @@ public class PaginatorService extends AbstractService {
             }
             case "l": {
                 int page = (int) session.getAttribute("page");
+
                 if (page > 1) {
                     session.setAttribute("page", --page);
                     req.getRequestDispatcher(target).forward(req, resp);

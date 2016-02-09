@@ -12,6 +12,16 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class DirectionsService extends AbstractService {
+    private Directions directions;
+    private int capacity;
+
+    private Date depTime;
+    private Date destTime;
+
+    private double basicPrice;
+    private double dateMult;
+    private double fillMult;
+
     public DirectionsService(HttpServletRequest req, HttpServletResponse resp) {
         super(req, resp);
     }
@@ -20,14 +30,7 @@ public class DirectionsService extends AbstractService {
         String fieldDeparture = req.getParameter("fieldDeparture");
         String fieldDestination = req.getParameter("fieldDestination");
 
-        int capacity = 0;
 
-        Date depTime = null;
-        Date destTime = null;
-
-        double basicPrice = 0;
-        double dateMult = 0;
-        double fillMult = 0;
 
         try {
             capacity = Integer.parseInt(req.getParameter("capacity"));
@@ -48,17 +51,17 @@ public class DirectionsService extends AbstractService {
             req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
             return;
         }
-
-        Directions.addDirection(fieldDeparture, depTime, fieldDestination, destTime, basicPrice, dateMult, fillMult, capacity);
+        directions = new Directions();
+        directions.addDirection(fieldDeparture, depTime, fieldDestination, destTime, basicPrice, dateMult, fillMult, capacity);
         req.getRequestDispatcher("jsp/workspace.jsp").forward(req, resp);
     }
 
     public void processRemoving() throws ServletException, IOException {
         int rmDirId = Integer.valueOf(req.getParameter("id"));
         String redirection = "5; URL=http://" + req.getHeader("host") + "/jsp/workspace.jsp";
-
-        if (Directions.isEmptyDirection(rmDirId)) {
-            Directions.removeDirection(rmDirId);
+        directions = new Directions();
+        if (directions.isEmptyDirection(rmDirId)) {
+            directions.removeDirection(rmDirId);
             resp.setHeader("Refresh", redirection);
             req.getRequestDispatcher("jsp/removed.jsp").forward(req, resp);
 

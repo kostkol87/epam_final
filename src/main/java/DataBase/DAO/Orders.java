@@ -16,10 +16,8 @@ import java.util.List;
 
 public class Orders {
     private static final Logger log = Logger.getLogger(Orders.class);
-    static List<Order> orders;
 
-
-    public static Order addOrder(Direction direction, User user, int quantity, boolean baggage, boolean priority, double summa) {
+    public Order addOrder(Direction direction, User user, int quantity, boolean baggage, boolean priority, double summa) {
         if (quantity > direction.getLeftPlaces()) {
             return null;
         }
@@ -38,11 +36,11 @@ public class Orders {
             preparedStatement.setBoolean(7, false);
 
             preparedStatement.executeUpdate();
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int newId = generatedKeys.getInt(1);
-                newOrder.setId(newId);
-            }
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int newId = generatedKeys.getInt(1);
+                    newOrder.setId(newId);
+                }
             newOrder.setDirection(direction);
             newOrder.setQuantity(quantity);
             newOrder.setBaggage(baggage);
@@ -58,9 +56,8 @@ public class Orders {
         return newOrder;
     }
 
-    public static List<Order> getOrders(int id) {
-        User user = null;
-        orders = new ArrayList<>();
+    public List<Order> getOrders(int id) {
+        List<Order> orders = new ArrayList<>();
         try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, direction, quantity, baggage, priority_queue, client, summa, paid FROM orders WHERE client=?");
             preparedStatement.setInt(1, id);
@@ -69,16 +66,11 @@ public class Orders {
             while (resultSet.next()) {
                 order = new Order();
                 order.setId(resultSet.getInt("id"));
-                order.setDirection(Directions.getDirection(resultSet.getInt("direction")));
+                order.setDirection(new Directions().getDirection(resultSet.getInt("direction")));
                 order.setQuantity(resultSet.getInt("quantity"));
                 order.setBaggage(resultSet.getBoolean("baggage"));
                 order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
-                if (user == null) {
-                    user = Users.getUser(resultSet.getInt("client"));
-                    order.setClient(user);
-                } else {
-                    order.setClient(user);
-                }
+                order.setClient(new Users().getUser(id));
                 order.setSumma(resultSet.getDouble("summa"));
                 order.setPaid(resultSet.getBoolean("paid"));
                 orders.add(order);
@@ -87,11 +79,10 @@ public class Orders {
             log.warn("SQLException in getOrders");
             e.printStackTrace();
         }
-        user = null;
         return orders;
     }
 
-    public static Order getOrder(int id) {
+    public Order getOrder(int id) {
         Order order = new Order();
         User user = null;
         try (Connection connection = Pool.getInstance().getConnection()){
@@ -100,13 +91,13 @@ public class Orders {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 order.setId(resultSet.getInt("id"));
-                order.setDirection(Directions.getDirection(resultSet.getInt("direction")));
+                order.setDirection(new Directions().getDirection(resultSet.getInt("direction")));
                 order.setQuantity(resultSet.getInt("quantity"));
                 order.setBaggage(resultSet.getBoolean("baggage"));
                 order.setPriorityQueue(resultSet.getBoolean("priority_queue"));
 //                order.setClient(getUser(resultSet.getInt("client")));
                 if (user == null) {
-                    user = Users.getUser(resultSet.getInt("client"));
+                    user = new Users().getUser(resultSet.getInt("client"));
                     order.setClient(user);
                 } else {
                     order.setClient(user);
@@ -122,7 +113,7 @@ public class Orders {
         return order;
     }
 
-    public static void updateOrderPay(int orderId, boolean isPaid) {
+    public void updateOrderPay(int orderId, boolean isPaid) {
         try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT left_places FROM directions WHERE id=(SELECT direction FROM  orders WHERE id=?)");
             preparedStatement.setInt(1, orderId);
@@ -156,7 +147,7 @@ public class Orders {
         }
     }
 
-    public static void removeOrder(int orderId) {
+    public void removeOrder(int orderId) {
         try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM orders WHERE id=?"
@@ -169,7 +160,7 @@ public class Orders {
         }
     }
 
-    public static void changeOrder(int orderId, int passangersCount, boolean needBaggage, boolean needPriority){
+    public void changeOrder(int orderId, int passangersCount, boolean needBaggage, boolean needPriority){
         try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT direction FROM orders WHERE id=?");
             preparedStatement.setInt(1, orderId);
@@ -179,7 +170,7 @@ public class Orders {
             while (resultSet.next()){
                 directionId = resultSet.getInt("direction");
             }
-            Direction direction = Directions.getDirection(directionId);
+            Direction direction = new Directions().getDirection(directionId);
             double currentPrice = direction.getBasicPrice();
             if (needBaggage){
                 currentPrice += 45.0;

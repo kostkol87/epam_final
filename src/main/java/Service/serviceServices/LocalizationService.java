@@ -13,8 +13,10 @@ public class LocalizationService extends AbstractService {
     }
 
     public void processLocale() throws ServletException, IOException {
+
         String loc = req.getParameter("loc");
         String target = req.getParameter("target");
+
         switch (loc) {
             case "ru_RU": {
                 session.setAttribute("locale", "ru_RU");

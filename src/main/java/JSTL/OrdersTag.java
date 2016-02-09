@@ -44,7 +44,7 @@ public class OrdersTag extends TagSupport {
         String[] sLocale = locale.split("_");
         Locale myLocale = new Locale(sLocale[0], sLocale[1]);
         localedDict = ResourceBundle.getBundle("local", myLocale);
-        List<Order> orders = Orders.getOrders(userId);
+        List<Order> orders = new Orders().getOrders(userId);
         try {
             tagView.append("<table border=\"1\">" +
                     "<tr>" +

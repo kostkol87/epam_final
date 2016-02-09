@@ -22,9 +22,9 @@ public class Directions {
 
     public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public static int directionsCount;
+    public int directionsCount;
 
-    public static void addDirection(String departure, Date depTime, String destination, Date destTime,
+    public void addDirection(String departure, Date depTime, String destination, Date destTime,
                                     double basicPrice, double dateMultiplier, double fillMultiplier, int capacity){
 
         try(Connection connection = Pool.getInstance().getConnection()){
@@ -47,7 +47,7 @@ public class Directions {
             e.printStackTrace();
         }
     }
-    public static Direction getDirection(int id) {
+    public Direction getDirection(int id) {
         Direction result = null;
         if (directions == null){
             getDirections();
@@ -60,7 +60,7 @@ public class Directions {
         return result;
     }
 
-    public static List<Direction> getDirections() {
+    public List<Direction> getDirections() {
         directions = new ArrayList<>();
         try (Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("" +
@@ -98,7 +98,7 @@ public class Directions {
         return directions;
     }
 
-    public static boolean isEmptyDirection(int id){
+    public boolean isEmptyDirection(int id){
         boolean result = false;
         try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT id FROM orders WHERE direction=? AND paid=1");
@@ -113,7 +113,7 @@ public class Directions {
         return result;
     }
 
-    public static void removeDirection(int id){
+    public void removeDirection(int id){
         try(Connection connection = Pool.getInstance().getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE directions, orders  FROM directions  INNER JOIN orders\n" +

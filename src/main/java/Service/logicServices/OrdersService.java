@@ -15,13 +15,15 @@ import java.io.IOException;
 import java.util.List;
 
 public class OrdersService extends AbstractService {
+    private Orders orders;
+
     public OrdersService(HttpServletRequest req, HttpServletResponse resp) {
         super(req, resp);
     }
 
     public void processNewOrder() throws ServletException, IOException {
         int orderId = Integer.parseInt(req.getParameter("id"));
-        List<Direction> directions =  Directions.getDirections();
+        List<Direction> directions =  new Directions().getDirections();
         for (Direction direct : directions) {
             if (direct.getId() == orderId) {
                 session.setAttribute("newOrder", direct);
@@ -37,7 +39,8 @@ public class OrdersService extends AbstractService {
 
         if (removeId != null) {
             try {
-                Orders.removeOrder(Integer.parseInt(removeId));
+                orders = new Orders();
+                orders.removeOrder(Integer.parseInt(removeId));
             } catch (NumberFormatException e) {
                 log.warn("NumberFormatException in changing...");
                 req.getRequestDispatcher("jsp/showOrders.jsp");
@@ -76,8 +79,8 @@ public class OrdersService extends AbstractService {
         }
 
         int changingOrderId = Integer.parseInt((String) session.getAttribute("changing"));
-
-        Orders.changeOrder(changingOrderId, passCount, needBaggage, needPriority);
+        orders = new Orders();
+        orders.changeOrder(changingOrderId, passCount, needBaggage, needPriority);
         req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);
     }
 
@@ -116,7 +119,11 @@ public class OrdersService extends AbstractService {
 
         summa = summa * count;
         session.setAttribute("summa", summa);
-        dataBase.entities.Order order = Orders.addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
+
+        orders = new Orders();
+
+        dataBase.entities.Order order = orders.addOrder(orderDirection, thisUser, count, needBaggage, neenPriority, summa);
+
         if (order == null) {
             req.setAttribute("capacityFail", true);
             req.getRequestDispatcher("jsp/orderProcess.jsp").forward(req, resp);
@@ -128,12 +135,16 @@ public class OrdersService extends AbstractService {
     }
 
     public void processPaymentComplete() throws ServletException, IOException {
+
         String paramId = req.getParameter("id");
+
         dataBase.entities.Order order = (Order) session.getAttribute("order");
+        orders = new Orders();
+
         if (paramId != null) {
-            Orders.updateOrderPay(Integer.parseInt(paramId), true);
+            orders.updateOrderPay(Integer.parseInt(paramId), true);
         } else {
-            if (order != null) Orders.updateOrderPay(order.getId(), true);
+            if (order != null) orders.updateOrderPay(order.getId(), true);
         }
 
         req.getRequestDispatcher("jsp/showOrders.jsp").forward(req, resp);

@@ -3,6 +3,8 @@ CREATE TABLE cities
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     city VARCHAR(128) NOT NULL
 );
+CREATE UNIQUE INDEX unique_city ON cities (city);
+CREATE UNIQUE INDEX unique_id ON cities (id);
 CREATE TABLE directions
 (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -27,23 +29,4 @@ CREATE TABLE orders
     summa DOUBLE NOT NULL,
     paid TINYINT DEFAULT 0 NOT NULL
 );
-CREATE TABLE roles
-(
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    role VARCHAR(60) NOT NULL
-);
-CREATE TABLE user
-(
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    email VARCHAR(128) NOT NULL,
-    password VARCHAR(256) NOT NULL,
-    surname VARCHAR(128) NOT NULL,
-    name VARCHAR(128) NOT NULL,
-    patronomic VARCHAR(128) NOT NULL,
-    role INT NOT NULL
-);
-CREATE UNIQUE INDEX unique_city ON cities (city);
-CREATE UNIQUE INDEX unique_id ON cities (id);
-CREATE UNIQUE INDEX unique_role ON roles (role);
-CREATE UNIQUE INDEX unique_email ON user (email);
-CREATE UNIQUE INDEX unique_id ON user (id);
+

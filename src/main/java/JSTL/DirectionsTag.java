@@ -44,7 +44,7 @@ public class DirectionsTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        List<Direction> directions = Directions.getDirections();
+        List<Direction> directions = new Directions().getDirections();
         if (locale == "" || locale == null) {
             this.setLocale("ru_RU");
         }
